@@ -2,11 +2,6 @@
 /* Template Name: Über Uns */
 if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
-get_template_part( 'template-parts/page-hero', null, array(
-	'title'    => 'Über Uns',
-	'subtitle' => 'Seit über 12 Jahren realisieren wir Photovoltaikanlagen für Privathaushalte, Landwirtschaft und Gewerbe im Kanton Zürich – unkompliziert, transparent und aus einer Hand.',
-	'image'    => get_template_directory_uri() . '/assets/images/hero-ueber-uns.jpg',
-) );
 
 function sk_render_team_group( $group_key, $heading ) {
 	$query = new WP_Query( array(
@@ -41,19 +36,31 @@ function sk_render_team_group( $group_key, $heading ) {
 	</div>
 	<?php
 }
-?>
 
-<section class="sk-section">
-	<div class="sk-container">
-		<?php
-		sk_render_team_group( 'team', 'Unser Team' );
-		sk_render_team_group( 'partner', 'Unsere Partner' );
+while ( have_posts() ) : the_post();
+	$sk_subtitle = get_the_excerpt() ?: 'Seit über 12 Jahren realisieren wir Photovoltaikanlagen für Privathaushalte, Landwirtschaft und Gewerbe im Kanton Zürich – unkompliziert, transparent und aus einer Hand.';
+	$sk_image    = get_the_post_thumbnail_url( get_the_ID(), 'sk-hero' ) ?: get_template_directory_uri() . '/assets/images/hero-ueber-uns.jpg';
 
-		if ( ! ( new WP_Query( array( 'post_type' => 'team_member', 'posts_per_page' => 1 ) ) )->have_posts() ) {
-			echo '<p>Noch niemand erfasst. Lege Team- und Partnerprofile unter „Über Uns“ im Admin-Menü an.</p>';
-		}
-		?>
-	</div>
-</section>
+	get_template_part( 'template-parts/page-hero', null, array(
+		'title'    => get_the_title(),
+		'subtitle' => $sk_subtitle,
+		'image'    => $sk_image,
+	) );
+	?>
 
-<?php get_footer(); ?>
+	<section class="sk-section">
+		<div class="sk-container">
+			<?php
+			sk_render_team_group( 'team', get_theme_mod( 'sk_team_heading', 'Unser Team' ) );
+			sk_render_team_group( 'partner', get_theme_mod( 'sk_partner_heading', 'Unsere Partner' ) );
+
+			if ( ! ( new WP_Query( array( 'post_type' => 'team_member', 'posts_per_page' => 1 ) ) )->have_posts() ) {
+				echo '<p>Noch niemand erfasst. Lege Team- und Partnerprofile unter „Über Uns“ im Admin-Menü an.</p>';
+			}
+			?>
+		</div>
+	</section>
+	<?php
+endwhile;
+
+get_footer();

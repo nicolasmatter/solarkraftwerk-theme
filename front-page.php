@@ -1,9 +1,10 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 get_header();
+$sk_home_image = get_the_post_thumbnail_url( get_the_ID(), 'sk-hero' ) ?: get_template_directory_uri() . '/assets/images/hero-home.jpg';
 ?>
 
-<section class="sk-home-hero" style="background-image:url('<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-home.jpg' ); ?>');">
+<section class="sk-home-hero" style="background-image:url('<?php echo esc_url( $sk_home_image ); ?>');">
 	<div class="sk-home-hero__overlay">
 		<?php get_template_part( 'template-parts/cta-button' ); ?>
 	</div>
@@ -11,7 +12,7 @@ get_header();
 
 <section class="sk-section">
 	<div class="sk-container">
-		<h2>Produkte und Leistungen</h2>
+		<h2><?php echo esc_html( get_theme_mod( 'sk_home_products_heading', 'Produkte und Leistungen' ) ); ?></h2>
 		<div class="sk-grid sk-grid--2">
 			<?php
 			$sk_products = new WP_Query( array(
@@ -52,7 +53,7 @@ get_header();
 
 <section class="sk-section">
 	<div class="sk-container">
-		<h2>Ausgewählte Projekte</h2>
+		<h2><?php echo esc_html( get_theme_mod( 'sk_home_projects_heading', 'Ausgewählte Projekte' ) ); ?></h2>
 		<div class="sk-grid sk-grid--3">
 			<?php
 			$sk_projects = new WP_Query( array(

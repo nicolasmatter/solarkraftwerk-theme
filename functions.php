@@ -17,6 +17,9 @@ function sk_setup() {
 	add_image_size( 'sk-card', 680, 450, true );
 	add_image_size( 'sk-card-portrait', 447, 450, true );
 	add_image_size( 'sk-hero', 1600, 600, true );
+
+	// Lets editors set a hero subtitle per page via the native Excerpt panel.
+	add_post_type_support( 'page', 'excerpt' );
 }
 add_action( 'after_setup_theme', 'sk_setup' );
 
