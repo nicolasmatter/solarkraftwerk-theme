@@ -1,0 +1,16 @@
+{
+	"apiVersion": 3,
+	"name": "sk/projects",
+	"title": "Projekte-Sektion",
+	"category": "solarkraftwerk",
+	"icon": "admin-home",
+	"description": "Zeigt Projekte aus den Referenzen (CPT) als Vorschau-Grid oder vollständige Liste mit Details.",
+	"attributes": {
+		"heading": { "type": "string", "default": "Ausgewählte Projekte" },
+		"mode": { "type": "string", "default": "teaser" },
+		"limit": { "type": "number", "default": 3 }
+	},
+	"supports": { "html": false },
+	"editorScript": "sk-block-projects-editor",
+	"render": "file:./render.php"
+}

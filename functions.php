@@ -20,6 +20,10 @@ function sk_setup() {
 
 	// Lets editors set a hero subtitle per page via the native Excerpt panel.
 	add_post_type_support( 'page', 'excerpt' );
+
+	// So the block editor's Server-Side-Render previews use our real styling.
+	add_theme_support( 'editor-styles' );
+	add_editor_style( 'assets/css/main.css' );
 }
 add_action( 'after_setup_theme', 'sk_setup' );
 
@@ -35,6 +39,7 @@ require get_template_directory() . '/inc/cpt-project.php';
 require get_template_directory() . '/inc/cpt-product.php';
 require get_template_directory() . '/inc/cpt-team.php';
 require get_template_directory() . '/inc/contact-form.php';
+require get_template_directory() . '/inc/blocks.php';
 
 /**
  * Small helper to output a text/textarea meta field inside a meta box.

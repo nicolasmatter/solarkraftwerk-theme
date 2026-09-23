@@ -8,9 +8,9 @@ function sk_customize_register( $wp_customize ) {
 	) );
 
 	$wp_customize->add_section( 'sk_copy', array(
-		'title'    => 'Seitentexte',
-		'priority' => 31,
-		'description' => 'Überschriften und Button-Texte, die auf mehreren Seiten erscheinen. Seitentitel, Hero-Untertitel und Hero-Bilder werden direkt auf der jeweiligen Seite (Titel, Auszug, Beitragsbild) bearbeitet.',
+		'title'       => 'CTA-Button',
+		'priority'    => 31,
+		'description' => 'Der Text des Angebots-Buttons, der auf jeder Seite erscheint. Überschriften der einzelnen Seitenabschnitte werden direkt im jeweiligen Block bearbeitet.',
 	) );
 
 	$sections = array(
@@ -27,16 +27,8 @@ function sk_customize_register( $wp_customize ) {
 			'sk_maps_embed'     => array( 'label' => 'Google Maps Embed-URL (optional)', 'default' => '' ),
 		),
 		'sk_copy' => array(
-			'sk_cta_title'                => array( 'label' => 'CTA-Button Titel', 'default' => 'Kostenlose Offerte' ),
-			'sk_cta_subtitle'             => array( 'label' => 'CTA-Button Untertitel', 'default' => 'in nur 2 Minuten' ),
-			'sk_home_products_heading'    => array( 'label' => 'Startseite: Überschrift Produkte', 'default' => 'Produkte und Leistungen' ),
-			'sk_home_projects_heading'    => array( 'label' => 'Startseite: Überschrift Projekte', 'default' => 'Ausgewählte Projekte' ),
-			'sk_referenzen_list_heading'  => array( 'label' => 'Referenzen: Überschrift Liste', 'default' => 'Projekte' ),
-			'sk_team_heading'             => array( 'label' => 'Über Uns: Überschrift Team', 'default' => 'Unser Team' ),
-			'sk_partner_heading'          => array( 'label' => 'Über Uns: Überschrift Partner', 'default' => 'Unsere Partner' ),
-			'sk_kontakt_info_heading'     => array( 'label' => 'Kontakt: Überschrift', 'default' => 'Kontakt' ),
-			'sk_kontakt_data_heading'     => array( 'label' => 'Kontakt: Überschrift Kontaktdaten', 'default' => 'Kontaktdaten' ),
-			'sk_kontakt_form_heading'     => array( 'label' => 'Kontakt: Überschrift Formular', 'default' => 'Kontaktformular' ),
+			'sk_cta_title'    => array( 'label' => 'CTA-Button Titel', 'default' => 'Kostenlose Offerte' ),
+			'sk_cta_subtitle' => array( 'label' => 'CTA-Button Untertitel', 'default' => 'in nur 2 Minuten' ),
 		),
 	);
 

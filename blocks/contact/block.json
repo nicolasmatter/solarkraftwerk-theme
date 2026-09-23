@@ -1,0 +1,16 @@
+{
+	"apiVersion": 3,
+	"name": "sk/contact",
+	"title": "Kontakt-Sektion",
+	"category": "solarkraftwerk",
+	"icon": "email",
+	"description": "Kontaktdaten, Karte und Kontaktformular nebeneinander.",
+	"attributes": {
+		"heading": { "type": "string", "default": "Kontakt" },
+		"dataHeading": { "type": "string", "default": "Kontaktdaten" },
+		"formHeading": { "type": "string", "default": "Kontaktformular" }
+	},
+	"supports": { "html": false },
+	"editorScript": "sk-block-contact-editor",
+	"render": "file:./render.php"
+}

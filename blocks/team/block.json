@@ -1,0 +1,15 @@
+{
+	"apiVersion": 3,
+	"name": "sk/team",
+	"title": "Team-Gruppe",
+	"category": "solarkraftwerk",
+	"icon": "groups",
+	"description": "Zeigt eine Gruppe von Personen aus „Team & Partner“ (CPT).",
+	"attributes": {
+		"heading": { "type": "string", "default": "Unser Team" },
+		"group": { "type": "string", "default": "team" }
+	},
+	"supports": { "html": false },
+	"editorScript": "sk-block-team-editor",
+	"render": "file:./render.php"
+}
