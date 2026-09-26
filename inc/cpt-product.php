@@ -15,7 +15,7 @@ function sk_register_product_cpt() {
 		'has_archive'  => false,
 		'rewrite'      => array( 'slug' => 'produkte' ),
 		'menu_icon'    => 'dashicons-admin-tools',
-		'supports'     => array( 'title', 'editor', 'thumbnail' ),
+		'supports'     => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
 		'show_in_rest' => true,
 	) );
 
@@ -28,14 +28,8 @@ function sk_register_product_cpt() {
 		'public'            => true,
 		'show_in_rest'      => true,
 		'rewrite'           => array( 'slug' => 'produktgruppe' ),
+		// Products without a group land here; editors can rename it under Produktgruppen.
+		'default_term'      => array( 'name' => 'Basic', 'slug' => 'basic' ),
 	) );
 }
 add_action( 'init', 'sk_register_product_cpt' );
-
-function sk_product_default_group( $post_id, $post, $update ) {
-	if ( $update || wp_is_post_revision( $post_id ) ) return;
-	if ( ! has_term( '', 'product_group', $post_id ) ) {
-		wp_set_object_terms( $post_id, 'Basic', 'product_group' );
-	}
-}
-add_action( 'save_post_product', 'sk_product_default_group', 10, 3 );

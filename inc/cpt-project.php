@@ -11,12 +11,14 @@ function sk_register_project_cpt() {
 			'all_items'          => 'Alle Projekte',
 			'menu_name'          => 'Referenzen',
 		),
-		'public'       => true,
-		'has_archive'  => false,
-		'rewrite'      => array( 'slug' => 'projekte' ),
-		'menu_icon'    => 'dashicons-admin-home',
-		'supports'     => array( 'title', 'thumbnail' ),
+		// Projects only appear in the project sections, never on pages of their own.
+		'public'       => false,
+		'show_ui'      => true,
+		'show_in_menu' => true,
 		'show_in_rest' => true,
+		'rewrite'      => false,
+		'menu_icon'    => 'dashicons-admin-home',
+		'supports'     => array( 'title', 'thumbnail', 'page-attributes' ),
 	) );
 }
 add_action( 'init', 'sk_register_project_cpt' );

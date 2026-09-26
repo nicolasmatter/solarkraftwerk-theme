@@ -8,9 +8,11 @@
 	"attributes": {
 		"heading": { "type": "string", "default": "Kontakt" },
 		"dataHeading": { "type": "string", "default": "Kontaktdaten" },
-		"formHeading": { "type": "string", "default": "Kontaktformular" }
+		"formHeading": { "type": "string", "default": "Kontaktformular" },
+		"submitLabel": { "type": "string", "default": "Absenden" },
+		"align": { "type": "string", "default": "full" }
 	},
-	"supports": { "html": false },
+	"supports": { "html": false, "align": [ "full" ], "anchor": true },
 	"editorScript": "sk-block-contact-editor",
 	"render": "file:./render.php"
 }

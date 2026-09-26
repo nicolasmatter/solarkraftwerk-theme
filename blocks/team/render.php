@@ -1,19 +1,15 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-$heading = isset( $attributes['heading'] ) ? $attributes['heading'] : 'Unser Team';
-$group   = isset( $attributes['group'] ) ? $attributes['group'] : 'team';
+$group = isset( $attributes['group'] ) ? $attributes['group'] : 'team';
 
-$sk_q = new WP_Query( array(
-	'post_type'      => 'team_member',
-	'posts_per_page' => -1,
-	'meta_key'       => '_sk_group',
-	'meta_value'     => $group,
-) );
+$sk_args               = sk_section_query_args( 'team_member' );
+$sk_args['meta_key']   = '_sk_group';
+$sk_args['meta_value'] = $group;
+$sk_q                  = new WP_Query( $sk_args );
+
+sk_section_open( $attributes );
 ?>
-<section class="sk-section sk-block-section">
-	<div class="sk-container">
 		<div class="sk-team-group">
-			<h2><?php echo esc_html( $heading ); ?></h2>
 			<?php if ( $sk_q->have_posts() ) : ?>
 				<?php while ( $sk_q->have_posts() ) : $sk_q->the_post();
 					$role  = get_post_meta( get_the_ID(), '_sk_role', true );
@@ -41,5 +37,5 @@ $sk_q = new WP_Query( array(
 				<p>Noch niemand in dieser Gruppe erfasst.</p>
 			<?php endif; ?>
 		</div>
-	</div>
-</section>
+<?php
+sk_section_close( $attributes );

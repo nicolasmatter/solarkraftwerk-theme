@@ -4,13 +4,18 @@
 	"title": "Projekte-Sektion",
 	"category": "solarkraftwerk",
 	"icon": "admin-home",
-	"description": "Zeigt Projekte aus den Referenzen (CPT) als Vorschau-Grid oder vollständige Liste mit Details.",
+	"description": "Zeigt Projekte aus den Referenzen als Vorschau-Grid oder vollständige Liste mit Details.",
 	"attributes": {
 		"heading": { "type": "string", "default": "Ausgewählte Projekte" },
 		"mode": { "type": "string", "default": "teaser" },
-		"limit": { "type": "number", "default": 3 }
+		"limit": { "type": "number", "default": 3 },
+		"ids": { "type": "array", "items": { "type": "number" }, "default": [] },
+		"linkText": { "type": "string", "default": "Mehr sehen" },
+		"linkUrl": { "type": "string", "default": "" },
+		"editorPreview": { "type": "boolean", "default": false },
+		"align": { "type": "string", "default": "full" }
 	},
-	"supports": { "html": false },
+	"supports": { "html": false, "align": [ "full" ], "anchor": true },
 	"editorScript": "sk-block-projects-editor",
 	"render": "file:./render.php"
 }

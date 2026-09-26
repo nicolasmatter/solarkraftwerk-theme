@@ -4,12 +4,14 @@
 	"title": "Team-Gruppe",
 	"category": "solarkraftwerk",
 	"icon": "groups",
-	"description": "Zeigt eine Gruppe von Personen aus „Team & Partner“ (CPT).",
+	"description": "Zeigt eine Gruppe von Personen aus „Team & Partner“.",
 	"attributes": {
 		"heading": { "type": "string", "default": "Unser Team" },
-		"group": { "type": "string", "default": "team" }
+		"group": { "type": "string", "default": "team" },
+		"editorPreview": { "type": "boolean", "default": false },
+		"align": { "type": "string", "default": "full" }
 	},
-	"supports": { "html": false },
+	"supports": { "html": false, "align": [ "full" ], "anchor": true },
 	"editorScript": "sk-block-team-editor",
 	"render": "file:./render.php"
 }

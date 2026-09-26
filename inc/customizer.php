@@ -22,8 +22,8 @@ function sk_customize_register( $wp_customize ) {
 			'sk_address_canton' => array( 'label' => 'Kanton', 'default' => 'Zürich' ),
 			'sk_hours'          => array( 'label' => 'Öffnungszeiten', 'default' => 'Mo–Fr 08:00–17:00 Uhr' ),
 			'sk_company_legal'  => array( 'label' => 'Firma (für Copyright)', 'default' => 'Netzwerk Nagel GmbH, Solarkraftwerk' ),
-			'sk_linkedin_url'   => array( 'label' => 'LinkedIn URL', 'default' => 'https://linkedin.com' ),
-			'sk_facebook_url'   => array( 'label' => 'Facebook URL', 'default' => 'https://facebook.com' ),
+			'sk_linkedin_url'   => array( 'label' => 'LinkedIn URL (leer = ausblenden)', 'default' => '' ),
+			'sk_facebook_url'   => array( 'label' => 'Facebook URL (leer = ausblenden)', 'default' => '' ),
 			'sk_maps_embed'     => array( 'label' => 'Google Maps Embed-URL (optional)', 'default' => '' ),
 		),
 		'sk_copy' => array(

@@ -15,7 +15,7 @@ function sk_register_team_cpt() {
 		'has_archive'  => false,
 		'rewrite'      => array( 'slug' => 'team' ),
 		'menu_icon'    => 'dashicons-groups',
-		'supports'     => array( 'title', 'thumbnail' ),
+		'supports'     => array( 'title', 'thumbnail', 'page-attributes' ),
 		'show_in_rest' => true,
 	) );
 }

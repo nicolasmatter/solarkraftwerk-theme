@@ -1,0 +1,19 @@
+{
+	"apiVersion": 3,
+	"name": "sk/hero",
+	"title": "Seitenkopf (Hero)",
+	"category": "solarkraftwerk",
+	"icon": "cover-image",
+	"description": "Grosses Titelbild mit Seitentitel, Untertitel und optionalem Offerte-Button.",
+	"attributes": {
+		"imageId": { "type": "number", "default": 0 },
+		"title": { "type": "string", "default": "" },
+		"subtitle": { "type": "string", "default": "" },
+		"size": { "type": "string", "default": "default" },
+		"showCta": { "type": "boolean", "default": true },
+		"align": { "type": "string", "default": "full" }
+	},
+	"supports": { "html": false, "align": [ "full" ] },
+	"editorScript": "sk-block-hero-editor",
+	"render": "file:./render.php"
+}

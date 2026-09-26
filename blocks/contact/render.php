@@ -1,15 +1,14 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-$heading     = isset( $attributes['heading'] ) ? $attributes['heading'] : 'Kontakt';
 $data_heading = isset( $attributes['dataHeading'] ) ? $attributes['dataHeading'] : 'Kontaktdaten';
 $form_heading = isset( $attributes['formHeading'] ) ? $attributes['formHeading'] : 'Kontaktformular';
+$submit_label = isset( $attributes['submitLabel'] ) && trim( wp_strip_all_tags( $attributes['submitLabel'] ) ) ? $attributes['submitLabel'] : 'Absenden';
+
+sk_section_open( $attributes );
 ?>
-<section class="sk-section sk-block-section">
-	<div class="sk-container">
-		<h2><?php echo esc_html( $heading ); ?></h2>
 		<div class="sk-grid sk-grid--2 sk-kontakt-grid">
 			<div>
-				<h3><?php echo esc_html( $data_heading ); ?></h3>
+				<?php sk_block_heading( $data_heading, 'h3' ); ?>
 				<p><strong>Adresse:</strong><br>
 				<?php echo esc_html( get_theme_mod( 'sk_address_street', 'Musterstrasse 12' ) ); ?>,<br>
 				<?php echo esc_html( get_theme_mod( 'sk_address_city', '8000 Zürich' ) ); ?></p>
@@ -34,7 +33,7 @@ $form_heading = isset( $attributes['formHeading'] ) ? $attributes['formHeading']
 			</div>
 
 			<div>
-				<h3><?php echo esc_html( $form_heading ); ?></h3>
+				<?php sk_block_heading( $form_heading, 'h3' ); ?>
 				<?php if ( isset( $_GET['sk_contact'] ) && 'ok' === $_GET['sk_contact'] ) : ?>
 					<p class="sk-form-notice sk-form-notice--ok">Vielen Dank für Ihre Nachricht! Wir melden uns in Kürze.</p>
 				<?php elseif ( isset( $_GET['sk_contact'] ) && 'error' === $_GET['sk_contact'] ) : ?>
@@ -57,9 +56,9 @@ $form_heading = isset( $attributes['formHeading'] ) ? $attributes['formHeading']
 					<label for="sk-message">Nachricht</label>
 					<textarea id="sk-message" name="message" rows="5" placeholder="Ihre Nachricht" required></textarea>
 
-					<button type="submit" class="sk-button">Absenden</button>
+					<button type="submit" class="sk-button"><?php echo wp_kses_post( $submit_label ); ?></button>
 				</form>
 			</div>
 		</div>
-	</div>
-</section>
+<?php
+sk_section_close( $attributes );

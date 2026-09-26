@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SK_THEME_VERSION', '1.0.0' );
+define( 'SK_THEME_VERSION', '1.1.0' );
 
 function sk_setup() {
 	add_theme_support( 'title-tag' );
@@ -12,14 +12,18 @@ function sk_setup() {
 
 	register_nav_menus( array(
 		'primary' => __( 'Hauptmenü', 'solarkraftwerk' ),
+		'footer'  => __( 'Footer (Rechtliches)', 'solarkraftwerk' ),
 	) );
 
 	add_image_size( 'sk-card', 680, 450, true );
 	add_image_size( 'sk-card-portrait', 447, 450, true );
 	add_image_size( 'sk-hero', 1600, 600, true );
 
-	// Lets editors set a hero subtitle per page via the native Excerpt panel.
-	add_post_type_support( 'page', 'excerpt' );
+	// Sections (hero, products, …) span the full width; everything else follows theme.json layout.
+	add_theme_support( 'align-wide' );
+
+	// Keep the inserter focused on the theme's own sections instead of WordPress.org patterns.
+	remove_theme_support( 'core-block-patterns' );
 
 	// So the block editor's Server-Side-Render previews use our real styling.
 	add_theme_support( 'editor-styles' );
@@ -28,7 +32,6 @@ function sk_setup() {
 add_action( 'after_setup_theme', 'sk_setup' );
 
 function sk_scripts() {
-	wp_enqueue_style( 'sk-google-fonts', 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap', array(), null );
 	wp_enqueue_style( 'sk-main', get_template_directory_uri() . '/assets/css/main.css', array(), SK_THEME_VERSION );
 	wp_enqueue_script( 'sk-main', get_template_directory_uri() . '/assets/js/main.js', array(), SK_THEME_VERSION, true );
 }
@@ -40,6 +43,31 @@ require get_template_directory() . '/inc/cpt-product.php';
 require get_template_directory() . '/inc/cpt-team.php';
 require get_template_directory() . '/inc/contact-form.php';
 require get_template_directory() . '/inc/blocks.php';
+require get_template_directory() . '/inc/upgrade.php';
+
+add_filter( 'should_load_remote_block_patterns', '__return_false' );
+
+/**
+ * Footer links until a menu is assigned to the "Footer (Rechtliches)" location.
+ */
+function sk_default_footer_menu() {
+	echo '<ul>';
+	foreach ( array( 'datenschutzbestimmungen' => 'Datenschutzbestimmungen', 'impressum' => 'Impressum' ) as $slug => $label ) {
+		echo '<li><a href="' . esc_url( sk_page_url( $slug ) ) . '">' . esc_html( $label ) . '</a></li>';
+	}
+	echo '</ul>';
+}
+
+/**
+ * List products, projects and people in wp-admin in the same order as on the site.
+ */
+function sk_admin_menu_order( $query ) {
+	if ( ! is_admin() || ! $query->is_main_query() || $query->get( 'orderby' ) ) return;
+	if ( in_array( $query->get( 'post_type' ), array( 'product', 'project', 'team_member' ), true ) ) {
+		$query->set( 'orderby', array( 'menu_order' => 'ASC', 'date' => 'DESC' ) );
+	}
+}
+add_action( 'pre_get_posts', 'sk_admin_menu_order' );
 
 /**
  * Small helper to output a text/textarea meta field inside a meta box.

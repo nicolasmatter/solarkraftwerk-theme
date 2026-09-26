@@ -8,9 +8,14 @@
 	"attributes": {
 		"heading": { "type": "string", "default": "Produkte und Leistungen" },
 		"mode": { "type": "string", "default": "teaser" },
-		"limit": { "type": "number", "default": 2 }
+		"limit": { "type": "number", "default": 2 },
+		"ids": { "type": "array", "items": { "type": "number" }, "default": [] },
+		"linkText": { "type": "string", "default": "Mehr sehen" },
+		"linkUrl": { "type": "string", "default": "" },
+		"editorPreview": { "type": "boolean", "default": false },
+		"align": { "type": "string", "default": "full" }
 	},
-	"supports": { "html": false },
+	"supports": { "html": false, "align": [ "full" ], "anchor": true },
 	"editorScript": "sk-block-products-editor",
 	"render": "file:./render.php"
 }
