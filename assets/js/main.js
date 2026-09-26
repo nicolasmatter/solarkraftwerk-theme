@@ -8,3 +8,23 @@ document.addEventListener( 'DOMContentLoaded', function () {
 		toggle.setAttribute( 'aria-expanded', isOpen ? 'true' : 'false' );
 	} );
 } );
+
+// Swap the hero's offer button for the header one as soon as the visitor scrolls.
+( function () {
+	var root = document.documentElement;
+	var ticking = false;
+
+	function update() {
+		root.classList.toggle( 'sk-scrolled', window.scrollY > 40 );
+		ticking = false;
+	}
+
+	window.addEventListener( 'scroll', function () {
+		if ( ticking ) return;
+		ticking = true;
+		window.requestAnimationFrame( update );
+	}, { passive: true } );
+
+	// Pages reloaded mid-scroll start in the scrolled state.
+	update();
+} )();

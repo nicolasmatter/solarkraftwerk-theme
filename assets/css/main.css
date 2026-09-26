@@ -14,7 +14,11 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html {
+	scroll-behavior: smooth;
+	/* Keep anchor targets (e.g. #projekt-12) clear of the sticky header. */
+	scroll-padding-top: 130px;
+}
 body {
 	margin: 0;
 	font-family: var(--sk-font);
@@ -47,16 +51,18 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 /* Header */
 .sk-header {
 	background: var(--sk-dark);
-	position: relative;
+	position: sticky;
+	top: var(--wp-admin--admin-bar--height, 0px);
 	z-index: 40;
 }
 .sk-header__inner {
 	max-width: var(--sk-max-width);
 	margin: 0 auto;
 	padding: 0 var(--sk-gutter);
-	min-height: 110px;
+	min-height: 112px;
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	gap: 24px;
 }
 .sk-header__logo img { height: 52px; width: auto; }
@@ -68,7 +74,6 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 	white-space: nowrap;
 }
 .sk-header__contact a { color: var(--sk-orange); }
-.sk-header__nav { margin-left: auto; }
 .sk-nav { display: flex; gap: 24px; align-items: center; }
 .sk-nav a { color: var(--sk-white); font-weight: 400; }
 .sk-nav a:hover { color: var(--sk-orange); }
@@ -102,6 +107,32 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-cta__title { font-size: 1.7rem; font-weight: 600; line-height: 1.1; }
 .sk-cta__subtitle { font-size: 1rem; font-weight: 500; opacity: 0.9; }
 .sk-cta:hover { filter: brightness(1.05); }
+
+/* Compact variant in the header, per the Figma header component */
+.sk-cta--header {
+	border-radius: 8px;
+	padding: 8px 24px;
+	box-shadow: none;
+	gap: 10px;
+	flex-shrink: 0;
+}
+.sk-cta--header .sk-cta__title { font-size: 1rem; line-height: 1.2; }
+.sk-cta--header .sk-cta__subtitle { font-weight: 400; line-height: 1.2; }
+
+/* Once the visitor scrolls (html.sk-scrolled, set by main.js) the hero button
+   fades out and the header button fades in. visibility keeps the hidden one
+   out of the tab order; the header button keeps its space so nothing shifts. */
+.sk-hero .sk-cta,
+.sk-cta--header {
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.sk-cta--header { opacity: 0; visibility: hidden; }
+.sk-scrolled .sk-cta--header { opacity: 1; visibility: visible; }
+.sk-scrolled .sk-hero .sk-cta { opacity: 0; visibility: hidden; }
+@media (prefers-reduced-motion: reduce) {
+	.sk-hero .sk-cta,
+	.sk-cta--header { transition: none; }
+}
 
 /* Hero (sk/hero block) */
 .sk-hero {
@@ -261,11 +292,28 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 /* Responsive */
 @media (max-width: 960px) {
 	:root { --sk-gutter: 24px; }
-	.sk-header__inner { flex-wrap: wrap; min-height: auto; padding-top: 16px; padding-bottom: 16px; }
-	.sk-header__contact { order: 3; width: 100%; flex-direction: column; gap: 4px; font-size: 0.9rem; }
-	.sk-header__toggle { display: inline-flex; }
+	/* Logo, offer button and menu toggle share the first row; the logo shrinks
+	   rather than pushing the toggle onto a second line. */
+	.sk-header__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto auto;
+		column-gap: 12px;
+		row-gap: 0;
+		min-height: auto;
+		padding-top: 12px;
+		padding-bottom: 12px;
+	}
+	.sk-header__logo { min-width: 0; }
+	.sk-header__logo img { height: auto; max-height: 44px; max-width: 100%; }
+	.sk-header__contact { order: 3; grid-column: 1 / -1; flex-direction: column; gap: 4px; font-size: 0.9rem; padding-top: 12px; }
+	.sk-header__toggle { display: inline-flex; margin-left: 0; }
+	.sk-cta--header { padding: 6px 12px; gap: 2px; }
+	.sk-cta--header .sk-cta__title { font-size: 0.85rem; }
+	.sk-cta--header .sk-cta__subtitle { font-size: 0.7rem; }
+	/* Keep the sticky header short on phones once the button takes over. */
+	.sk-scrolled .sk-header__contact { display: none; }
 	.sk-header__nav {
-		display: none; width: 100%; order: 4;
+		display: none; grid-column: 1 / -1; order: 4;
 	}
 	.sk-header__nav.is-open { display: block; }
 	.sk-nav { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 0; }

@@ -21,6 +21,9 @@
 			<a href="mailto:<?php echo esc_attr( get_theme_mod( 'sk_email', 'info@solarkraftwerk.ch' ) ); ?>"><?php echo esc_html( get_theme_mod( 'sk_email', 'info@solarkraftwerk.ch' ) ); ?></a>
 		</div>
 
+		<?php // Hidden until the visitor scrolls, then takes over from the hero's button (see main.js). ?>
+		<?php get_template_part( 'template-parts/cta-button', null, array( 'modifier' => 'header' ) ); ?>
+
 		<button class="sk-header__toggle" id="sk-nav-toggle" aria-expanded="false" aria-controls="sk-primary-menu">
 			<span></span><span></span><span></span>
 			<span class="sk-visually-hidden">Menü</span>
