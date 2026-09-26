@@ -48,7 +48,6 @@ function sk_default_menu() {
 		home_url( '/' )              => 'Home',
 		home_url( '/uber-uns/' )     => 'Über Uns',
 		home_url( '/referenzen/' )   => 'Referenzen',
-		home_url( '/offertenrechner/' ) => 'Offertenrechner',
 		home_url( '/kontakt/' )      => 'Kontakt',
 	);
 	echo '<ul class="sk-nav">';
