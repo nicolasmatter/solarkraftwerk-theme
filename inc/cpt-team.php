@@ -28,7 +28,7 @@ add_action( 'add_meta_boxes', 'sk_team_meta_box' );
 
 function sk_render_team_meta_box( $post ) {
 	wp_nonce_field( 'sk_save_team_meta', 'sk_team_nonce' );
-	sk_meta_field( $post, '_sk_role', 'Rolle (z. B. Inhaber & Geschäftsführer – 15 Jahre Erfahrung)' );
+	sk_meta_field( $post, '_sk_role', 'Rolle bzw. Beschreibung (z. B. „PV-Spezialist“ oder bei Partnern „Zusammenarbeit seit 2026, über 20 Projekte verwirklicht.“)' );
 	sk_meta_field( $post, '_sk_phone', 'Telefon' );
 	sk_meta_field( $post, '_sk_email', 'E-Mail' );
 
