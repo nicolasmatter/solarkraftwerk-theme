@@ -18,7 +18,7 @@
 			"duotone": [],
 			"link": false,
 			"palette": [
-				{ "slug": "dark", "name": "Anthrazit", "color": "#1f2828" },
+				{ "slug": "dark", "name": "Anthrazit", "color": "#383e42" },
 				{ "slug": "orange", "name": "Orange", "color": "#ff6a00" },
 				{ "slug": "panel", "name": "Hellgrau", "color": "#eef2f2" },
 				{ "slug": "white", "name": "Weiss", "color": "#ffffff" }

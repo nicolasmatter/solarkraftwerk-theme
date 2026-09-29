@@ -2,11 +2,11 @@
 
 :root {
 	/* Colors and font come from theme.json so the editor offers the same palette. */
-	--sk-dark: var(--wp--preset--color--dark, #1f2828);
+	--sk-dark: var(--wp--preset--color--dark, #383e42);
 	--sk-orange: var(--wp--preset--color--orange, #ff6a00);
 	--sk-white: var(--wp--preset--color--white, #ffffff);
 	--sk-panel: var(--wp--preset--color--panel, #eef2f2);
-	--sk-text-muted: rgba(31, 40, 40, 0.7);
+	--sk-text-muted: rgba(56, 62, 66, 0.7);
 	--sk-font: var(--wp--preset--font-family--roboto, Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
 	--sk-content-size: var(--wp--style--global--content-size, 1372px);
 	--sk-gutter: 56px;
@@ -225,7 +225,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-project-row__stats { margin: 0; }
 .sk-project-row__stats div {
 	display: flex; justify-content: space-between; max-width: 420px;
-	padding: 6px 0; border-bottom: 1px solid rgba(31, 40, 40, 0.1);
+	padding: 6px 0; border-bottom: 1px solid rgba(56, 62, 66, 0.1);
 }
 .sk-project-row__stats dt { font-weight: 400; margin: 0; }
 .sk-project-row__stats dd { font-weight: 600; margin: 0; }
