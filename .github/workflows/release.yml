@@ -1,0 +1,35 @@
+name: Release
+
+# Push a tag like v1.2.0 (bin/release.sh does this) to publish solarkraftwerk-theme.zip
+# as a GitHub Release. Sites running the theme pick it up via inc/updater.php.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the tag matches the theme version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          css=$(sed -n 's/^Version: *//p' style.css | tr -d '\r')
+          php=$(sed -n "s/^define( 'SK_THEME_VERSION', '\(.*\)' );/\1/p" functions.php)
+          echo "tag=$tag style.css=$css functions.php=$php"
+          [ "$tag" = "$css" ] && [ "$tag" = "$php" ] || { echo "::error::Tag, style.css Version and SK_THEME_VERSION must match"; exit 1; }
+
+      - name: Lint PHP
+        run: find . -name '*.php' -not -path './inc/vendor/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Build zip
+        run: git archive --format=zip --prefix=solarkraftwerk-theme/ -o solarkraftwerk-theme.zip HEAD
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" solarkraftwerk-theme.zip --title "$GITHUB_REF_NAME" --generate-notes

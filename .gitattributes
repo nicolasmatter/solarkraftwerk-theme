@@ -1,0 +1,9 @@
+# Kept out of the release zip (git archive) that WordPress installs.
+/.github            export-ignore
+/bin                export-ignore
+/.gitattributes     export-ignore
+/.gitignore         export-ignore
+/README.md          export-ignore
+
+# Keep the release script runnable in Git Bash despite core.autocrlf.
+*.sh                text eol=lf

@@ -44,6 +44,7 @@ require get_template_directory() . '/inc/cpt-team.php';
 require get_template_directory() . '/inc/contact-form.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/upgrade.php';
+require get_template_directory() . '/inc/updater.php';
 
 add_filter( 'should_load_remote_block_patterns', '__return_false' );
 
