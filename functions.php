@@ -18,6 +18,7 @@ function sk_setup() {
 	add_image_size( 'sk-card', 680, 450, true );
 	add_image_size( 'sk-card-portrait', 447, 450, true );
 	add_image_size( 'sk-hero', 1600, 600, true );
+	add_image_size( 'sk-product', 780, 520, true );
 
 	// Sections (hero, products, …) span the full width; everything else follows theme.json layout.
 	add_theme_support( 'align-wide' );
@@ -83,3 +84,23 @@ function sk_meta_field( $post, $key, $label, $type = 'text' ) {
 	}
 	echo '</p>';
 }
+
+/**
+ * Image picker for a meta box, storing the attachment ID (see assets/js/admin-image-field.js).
+ */
+function sk_image_field( $post, $key, $label ) {
+	$image_id = absint( get_post_meta( $post->ID, $key, true ) );
+	echo '<div class="sk-image-field"><p><strong>' . esc_html( $label ) . '</strong></p>';
+	echo '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $image_id ?: '' ) . '">';
+	echo '<div class="sk-image-field__preview">' . ( $image_id ? wp_get_attachment_image( $image_id, 'medium' ) : '' ) . '</div>';
+	echo '<p><button type="button" class="button sk-image-field__select">Bild wählen</button> ';
+	echo '<button type="button" class="button-link button-link-delete sk-image-field__remove"' . ( $image_id ? '' : ' hidden' ) . '>Bild entfernen</button></p>';
+	echo '</div>';
+}
+
+function sk_admin_scripts( $hook ) {
+	if ( ! in_array( $hook, array( 'post.php', 'post-new.php' ), true ) || 'product' !== get_current_screen()->post_type ) return;
+	wp_enqueue_media();
+	wp_enqueue_script( 'sk-admin-image-field', get_template_directory_uri() . '/assets/js/admin-image-field.js', array( 'jquery' ), SK_THEME_VERSION, true );
+}
+add_action( 'admin_enqueue_scripts', 'sk_admin_scripts' );

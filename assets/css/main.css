@@ -230,6 +230,45 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-project-row__stats dt { font-weight: 400; margin: 0; }
 .sk-project-row__stats dd { font-weight: 600; margin: 0; }
 
+/* Produkt detail page (single-product.php) */
+.sk-product .sk-container { display: flex; flex-direction: column; gap: 56px; }
+.sk-product h2 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; margin: 0 0 24px; }
+.sk-back-link { display: inline-block; margin-bottom: 24px; color: var(--sk-orange); }
+.sk-back-link:hover { text-decoration: underline; }
+.sk-product__main {
+	display: grid;
+	grid-template-columns: 780fr 608fr;
+	border-radius: 8px;
+	overflow: hidden;
+}
+.sk-product__image { aspect-ratio: 780 / 520; background: #dfe3e3; overflow: hidden; }
+.sk-product__image img { width: 100%; height: 100%; object-fit: cover; }
+.sk-product__panel, .sk-product-card__panel {
+	background: var(--sk-panel);
+	padding: 24px 32px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 32px;
+}
+.sk-product__panel h2, .sk-product-card__panel h3 { margin: 0; }
+.sk-product__panel .sk-button { margin-top: 0; }
+.sk-button.sk-button--large { padding: 16px 32px; font-size: 1.25rem; }
+.sk-product__content { line-height: 1.5; }
+.sk-product__content > * { max-width: 900px; }
+.sk-product__content > :first-child { margin-top: 0; }
+.sk-product__content > :last-child { margin-bottom: 0; }
+.sk-product-card { display: block; border-radius: 8px; overflow: hidden; }
+.sk-product-card .sk-card__image { aspect-ratio: 686 / 450; }
+.sk-product-card:hover h3 { color: var(--sk-orange); }
+
+/* "Technische Daten": subtitle, then label/value rows */
+.sk-specs { align-self: stretch; }
+.sk-specs__subtitle { margin: 0 0 20px; }
+.sk-specs dl { margin: 0; display: flex; flex-direction: column; gap: 20px; }
+.sk-specs dl div { display: flex; justify-content: space-between; gap: 10px; }
+.sk-specs dt, .sk-specs dd { margin: 0; }
+
 /* Über uns team: photo left, details right on a panel, like the Referenzen rows */
 .sk-team-group { display: flex; flex-direction: column; gap: 24px; }
 .sk-team-member {
@@ -289,6 +328,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 
 /* Generic content */
 .sk-content { line-height: 1.7; }
+.sk-content ul { list-style: disc; padding-left: 1.25em; }
 .sk-single-image { margin: 1.5rem 0; border-radius: 8px; overflow: hidden; }
 
 /* Responsive */
@@ -322,6 +362,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 
 	.sk-grid--2, .sk-grid--3 { grid-template-columns: 1fr; }
 	.sk-project-row { grid-template-columns: 1fr; }
+	.sk-product__main { grid-template-columns: 1fr; }
 	.sk-project-row__image { aspect-ratio: 16 / 10; }
 	.sk-team-member { grid-template-columns: 1fr; gap: 0; }
 	.sk-hero__overlay { justify-content: flex-start; }
