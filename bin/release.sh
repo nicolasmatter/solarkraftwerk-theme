@@ -9,8 +9,9 @@ version="${1:?Usage: bin/release.sh X.Y.Z}"
 [ -z "$(git status --porcelain)" ] || { echo "Commit or stash your changes first."; exit 1; }
 [ "$(git rev-parse --abbrev-ref HEAD)" = "master" ] || { echo "Release from master."; exit 1; }
 
-sed -i "s/^Version: .*/Version: $version/" style.css
-sed -i "s/^define( 'SK_THEME_VERSION', '.*' );/define( 'SK_THEME_VERSION', '$version' );/" functions.php
+# perl rather than sed -i, whose syntax differs between macOS and Linux.
+perl -pi -e "s/^Version: .*/Version: $version/" style.css
+perl -pi -e "s/^define\\( 'SK_THEME_VERSION', '.*' \\);/define( 'SK_THEME_VERSION', '$version' );/" functions.php
 
 git add style.css functions.php
 git commit -m "Release $version"
