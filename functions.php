@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-define( 'SK_THEME_VERSION', '0.1.0' );
+define( 'SK_THEME_VERSION', '0.1.1' );
 
 function sk_setup() {
 	add_theme_support( 'title-tag' );
