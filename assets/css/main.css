@@ -11,6 +11,7 @@
 	--sk-content-size: var(--wp--style--global--content-size, 1372px);
 	--sk-gutter: 56px;
 	--sk-max-width: 1484px;
+	--sk-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 * { box-sizing: border-box; }
@@ -120,15 +121,17 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-cta--header .sk-cta__subtitle { font-weight: 400; line-height: 1.2; }
 
 /* Once the visitor scrolls (html.sk-scrolled, set by main.js) the hero button
-   fades out and the header button fades in. visibility keeps the hidden one
-   out of the tab order; the header button keeps its space so nothing shifts. */
+   fades out and the header button fades in just after it. visibility keeps the
+   hidden one out of the tab order and flips only once its fade has finished;
+   the header button keeps its space so nothing shifts. The drift (transform)
+   only applies with .sk-motion, see "Motion" below. */
 .sk-hero .sk-cta,
 .sk-cta--header {
-	transition: opacity 0.3s ease, visibility 0.3s ease;
+	transition: opacity 0.5s var(--sk-ease), transform 0.6s var(--sk-ease), visibility 0s linear 0s;
 }
-.sk-cta--header { opacity: 0; visibility: hidden; }
-.sk-scrolled .sk-cta--header { opacity: 1; visibility: visible; }
-.sk-scrolled .sk-hero .sk-cta { opacity: 0; visibility: hidden; }
+.sk-cta--header { opacity: 0; visibility: hidden; transition-delay: 0s, 0s, 0.6s; }
+.sk-scrolled .sk-cta--header { opacity: 1; visibility: visible; transition-delay: 0.12s, 0.12s, 0s; }
+.sk-scrolled .sk-hero .sk-cta { opacity: 0; visibility: hidden; transition-delay: 0s, 0s, 0.6s; }
 @media (prefers-reduced-motion: reduce) {
 	.sk-hero .sk-cta,
 	.sk-cta--header { transition: none; }
@@ -149,6 +152,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 	gap: 24px;
 	flex-wrap: wrap;
 	padding: 40px var(--sk-gutter) 64px;
+	position: relative; /* above the zooming image layer (see Motion) */
 }
 .sk-hero--large .sk-hero__overlay { min-height: 600px; }
 .sk-hero__content { max-width: 700px; }
@@ -330,6 +334,61 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-content { line-height: 1.7; }
 .sk-content ul { list-style: disc; padding-left: 1.25em; }
 .sk-single-image { margin: 1.5rem 0; border-radius: 8px; overflow: hidden; }
+
+/* Motion. Everything here needs html.sk-motion, which a head script sets before
+   first paint unless the visitor prefers reduced motion (sk_motion_flag()). The
+   block editor never gets it, so its previews stay static. */
+
+/* Hero entrance: the image eases out of a slight zoom, title and intro rise,
+   the offer button slides in. */
+.sk-motion .sk-hero { overflow: hidden; }
+.sk-motion .sk-hero::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: inherit;
+	animation: sk-zoom-out 9s ease-out both;
+}
+.sk-motion .sk-hero__content > * { animation: sk-rise 0.8s var(--sk-ease) both; }
+.sk-motion .sk-hero__content > :nth-child(2) { animation-delay: 0.15s; }
+/* backwards, not both: once played it must hand opacity/transform back to the scroll hand-off. */
+.sk-motion .sk-hero .sk-cta { animation: sk-slide-in 0.8s var(--sk-ease) 0.35s backwards; }
+.sk-motion .sk-cta--header { transform: translateY(-8px) scale(0.94); }
+.sk-motion.sk-scrolled .sk-cta--header { transform: none; }
+.sk-motion.sk-scrolled .sk-hero .sk-cta { transform: translateY(-16px) scale(0.96); }
+
+@keyframes sk-zoom-out { from { transform: scale(1.12); } to { transform: none; } }
+@keyframes sk-rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes sk-slide-in { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: none; } }
+
+/* Scroll reveal: blocks fade up as they enter the viewport (main.js adds .is-in).
+   Keep this selector list in sync with REVEAL in main.js. */
+.sk-motion :is(.sk-section h2, .sk-back-link, .sk-product__main, .sk-product__content > *, .sk-grid > *, .sk-project-row, .sk-team-member, .sk-link) {
+	transition: opacity 0.7s var(--sk-ease), transform 0.7s var(--sk-ease);
+}
+.sk-motion :is(.sk-section h2, .sk-back-link, .sk-product__main, .sk-product__content > *, .sk-grid > *, .sk-project-row, .sk-team-member, .sk-link):not(.is-in) {
+	opacity: 0;
+	transform: translateY(32px);
+}
+/* Cards in a row come in one after the other. */
+.sk-motion .sk-grid--2 > :nth-child(2n),
+.sk-motion .sk-grid--3 > :nth-child(3n + 2) { transition-delay: 0.1s; }
+.sk-motion .sk-grid--3 > :nth-child(3n) { transition-delay: 0.2s; }
+
+/* "Technische Daten" rows tick in one by one once their panel is visible. */
+.sk-motion .sk-specs__subtitle,
+.sk-motion .sk-specs dl div {
+	transition: opacity 0.5s ease, transform 0.5s var(--sk-ease);
+}
+.sk-motion .sk-specs:not(.is-in) :is(.sk-specs__subtitle, dl div) { opacity: 0; transform: translateX(-12px); }
+.sk-motion .sk-specs dl div:nth-child(1) { transition-delay: 0.12s; }
+.sk-motion .sk-specs dl div:nth-child(2) { transition-delay: 0.24s; }
+.sk-motion .sk-specs dl div:nth-child(3) { transition-delay: 0.36s; }
+
+/* Hover: cards keep their size, only the image zooms inside its frame. */
+.sk-motion :is(.sk-card, .sk-product-card, .sk-product__image) img { transition: transform 0.7s var(--sk-ease); }
+.sk-motion :is(.sk-card, .sk-product-card):hover img,
+.sk-motion .sk-product__main:hover .sk-product__image img { transform: scale(1.06); }
 
 /* Responsive */
 @media (max-width: 960px) {

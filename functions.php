@@ -38,6 +38,16 @@ function sk_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'sk_scripts' );
 
+/**
+ * Turns on the theme's animations (html.sk-motion) before first paint, so content
+ * waiting for the scroll reveal never flashes. Skipped when the visitor prefers
+ * reduced motion.
+ */
+function sk_motion_flag() {
+	wp_print_inline_script_tag( "if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('sk-motion');" );
+}
+add_action( 'wp_head', 'sk_motion_flag', 1 );
+
 require get_template_directory() . '/inc/customizer.php';
 require get_template_directory() . '/inc/cpt-project.php';
 require get_template_directory() . '/inc/cpt-product.php';
