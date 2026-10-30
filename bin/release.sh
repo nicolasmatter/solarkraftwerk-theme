@@ -8,6 +8,9 @@ version="${1:?Usage: bin/release.sh X.Y.Z}"
 [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Version must look like 1.2.0"; exit 1; }
 [ -z "$(git status --porcelain)" ] || { echo "Commit or stash your changes first."; exit 1; }
 [ "$(git rev-parse --abbrev-ref HEAD)" = "master" ] || { echo "Release from master."; exit 1; }
+# A release built without GitHub's latest commits would roll those changes back on every site.
+git fetch --quiet origin master
+[ -z "$(git rev-list HEAD..origin/master)" ] || { echo "master is behind origin/master. Pull first."; exit 1; }
 
 # perl rather than sed -i, whose syntax differs between macOS and Linux.
 perl -pi -e "s/^Version: .*/Version: $version/" style.css
@@ -16,5 +19,6 @@ perl -pi -e "s/^define\\( 'SK_THEME_VERSION', '.*' \\);/define( 'SK_THEME_VERSIO
 git add style.css functions.php
 git commit -m "Release $version"
 git tag "v$version"
-git push origin master "v$version"
+# Atomic so the tag (which triggers the release) is never pushed if master is rejected.
+git push --atomic origin master "v$version"
 echo "Pushed v$version. The release appears at https://github.com/nicolasmatter/solarkraftwerk-theme/releases once the workflow finishes."
