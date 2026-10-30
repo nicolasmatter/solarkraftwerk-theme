@@ -226,6 +226,9 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-project-row__image img { width: 100%; height: 100%; object-fit: cover; }
 .sk-project-row__details { padding: 40px 48px; }
 .sk-project-row__subtitle { color: var(--sk-text-muted); margin: 0 0 1.5rem; }
+.sk-project-row__subtitle > :first-child { margin-top: 0; }
+.sk-project-row__subtitle > :last-child { margin-bottom: 0; }
+.sk-project-row__subtitle a { color: inherit; }
 .sk-project-row__stats { margin: 0; }
 .sk-project-row__stats div {
 	display: flex; justify-content: space-between; max-width: 420px;
@@ -290,6 +293,8 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-team-member__info h3 { margin-bottom: 24px; }
 .sk-team-member__info p { margin: 0 0 25px; line-height: 25px; }
 .sk-team-member__info a:hover { color: var(--sk-orange); }
+.sk-team-member__description ul,
+.sk-team-member__description ol { margin: 0 0 25px; padding-left: 1.25em; line-height: 25px; }
 
 /* Kontakt */
 .sk-kontakt-grid { align-items: start; }

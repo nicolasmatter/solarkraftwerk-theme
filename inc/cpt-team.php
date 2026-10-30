@@ -29,6 +29,7 @@ add_action( 'add_meta_boxes', 'sk_team_meta_box' );
 function sk_render_team_meta_box( $post ) {
 	wp_nonce_field( 'sk_save_team_meta', 'sk_team_nonce' );
 	sk_meta_field( $post, '_sk_role', 'Rolle bzw. Beschreibung (z. B. „PV-Spezialist“ oder bei Partnern „Zusammenarbeit seit 2026, über 20 Projekte verwirklicht.“)' );
+	sk_meta_field( $post, '_sk_description', 'Beschreibung', 'rich' );
 	sk_meta_field( $post, '_sk_phone', 'Telefon' );
 	sk_meta_field( $post, '_sk_email', 'E-Mail' );
 
@@ -46,6 +47,9 @@ function sk_save_team_meta( $post_id ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 	if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 
+	if ( isset( $_POST['_sk_description'] ) ) {
+		update_post_meta( $post_id, '_sk_description', wp_kses_post( wp_unslash( $_POST['_sk_description'] ) ) );
+	}
 	foreach ( array( '_sk_role', '_sk_phone', '_sk_email' ) as $key ) {
 		if ( isset( $_POST[ $key ] ) ) {
 			update_post_meta( $post_id, $key, sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) );

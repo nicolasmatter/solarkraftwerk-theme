@@ -30,7 +30,7 @@ add_action( 'add_meta_boxes', 'sk_project_meta_box' );
 
 function sk_render_project_meta_box( $post ) {
 	wp_nonce_field( 'sk_save_project_meta', 'sk_project_nonce' );
-	sk_meta_field( $post, '_sk_subtitle', 'Untertitel (z. B. Schrägdach - Novotegra Einlegesystem)' );
+	sk_meta_field( $post, '_sk_subtitle', 'Untertitel (z. B. Schrägdach - Novotegra Einlegesystem)', 'rich' );
 	sk_meta_field( $post, '_sk_power_kwp', 'Leistung (z. B. 17.86 kWp)' );
 	sk_meta_field( $post, '_sk_year', 'Umsetzungsjahr' );
 	sk_meta_field( $post, '_sk_modules', 'Anzahl Module' );
@@ -41,7 +41,10 @@ function sk_save_project_meta( $post_id ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 	if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 
-	foreach ( array( '_sk_subtitle', '_sk_power_kwp', '_sk_year', '_sk_modules' ) as $key ) {
+	if ( isset( $_POST['_sk_subtitle'] ) ) {
+		update_post_meta( $post_id, '_sk_subtitle', wp_kses_post( wp_unslash( $_POST['_sk_subtitle'] ) ) );
+	}
+	foreach ( array( '_sk_power_kwp', '_sk_year', '_sk_modules' ) as $key ) {
 		if ( isset( $_POST[ $key ] ) ) {
 			update_post_meta( $post_id, $key, sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) );
 		}

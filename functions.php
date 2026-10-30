@@ -82,10 +82,26 @@ function sk_admin_menu_order( $query ) {
 add_action( 'pre_get_posts', 'sk_admin_menu_order' );
 
 /**
- * Small helper to output a text/textarea meta field inside a meta box.
+ * Small helper to output a text/textarea/rich-text meta field inside a meta box.
  */
 function sk_meta_field( $post, $key, $label, $type = 'text' ) {
 	$value = get_post_meta( $post->ID, $key, true );
+
+	if ( 'rich' === $type ) {
+		// TinyMCE editor IDs may only contain lowercase letters.
+		$editor_id = preg_replace( '/[^a-z]/', '', strtolower( $key ) );
+		echo '<p><label for="' . esc_attr( $editor_id ) . '"><strong>' . esc_html( $label ) . '</strong></label></p>';
+		wp_editor( $value, $editor_id, array(
+			'textarea_name' => $key,
+			'textarea_rows' => 4,
+			'media_buttons' => false,
+			'teeny'         => true,
+			'quicktags'     => false,
+			'tinymce'       => array( 'toolbar1' => 'bold,italic,underline,strikethrough,link,unlink,bullist,numlist,undo,redo' ),
+		) );
+		return;
+	}
+
 	echo '<p><label for="' . esc_attr( $key ) . '"><strong>' . esc_html( $label ) . '</strong></label><br>';
 	if ( 'textarea' === $type ) {
 		echo '<textarea style="width:100%;" rows="3" id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '">' . esc_textarea( $value ) . '</textarea>';

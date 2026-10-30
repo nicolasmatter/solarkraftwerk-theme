@@ -12,9 +12,10 @@ sk_section_open( $attributes );
 		<div class="sk-team-group">
 			<?php if ( $sk_q->have_posts() ) : ?>
 				<?php while ( $sk_q->have_posts() ) : $sk_q->the_post();
-					$role  = get_post_meta( get_the_ID(), '_sk_role', true );
-					$phone = get_post_meta( get_the_ID(), '_sk_phone', true );
-					$email = get_post_meta( get_the_ID(), '_sk_email', true );
+					$role        = get_post_meta( get_the_ID(), '_sk_role', true );
+					$description = get_post_meta( get_the_ID(), '_sk_description', true );
+					$phone       = get_post_meta( get_the_ID(), '_sk_phone', true );
+					$email       = get_post_meta( get_the_ID(), '_sk_email', true );
 					?>
 					<article class="sk-team-member">
 						<div class="sk-team-member__photo">
@@ -25,6 +26,7 @@ sk_section_open( $attributes );
 						<div class="sk-team-member__info">
 							<h3><?php the_title(); ?></h3>
 							<?php if ( $role ) : ?><p><?php echo esc_html( $role ); ?></p><?php endif; ?>
+							<?php if ( $description ) : ?><div class="sk-team-member__description"><?php echo wp_kses_post( wpautop( $description ) ); ?></div><?php endif; ?>
 							<?php if ( $phone || $email ) : ?>
 								<p class="sk-team-member__contact">
 									<?php if ( $phone ) : ?>Tel.: <a href="tel:<?php echo esc_attr( preg_replace( '/[^\d+]/', '', $phone ) ); ?>"><?php echo esc_html( $phone ); ?></a><br><?php endif; ?>

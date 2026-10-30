@@ -28,7 +28,7 @@ if ( 'list' === $mode ) :
 					</div>
 					<div class="sk-project-row__details">
 						<h3><?php the_title(); ?></h3>
-						<?php if ( $subtitle ) : ?><p class="sk-project-row__subtitle"><?php echo esc_html( $subtitle ); ?></p><?php endif; ?>
+						<?php if ( $subtitle ) : ?><div class="sk-project-row__subtitle"><?php echo wp_kses_post( wpautop( $subtitle ) ); ?></div><?php endif; ?>
 						<dl class="sk-project-row__stats">
 							<?php if ( $power ) : ?><div><dt>Leistung:</dt><dd><?php echo esc_html( $power ); ?></dd></div><?php endif; ?>
 							<?php if ( $year ) : ?><div><dt>Umsetzungsjahr:</dt><dd><?php echo esc_html( $year ); ?></dd></div><?php endif; ?>
