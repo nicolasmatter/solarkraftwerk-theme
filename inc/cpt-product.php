@@ -57,7 +57,7 @@ function sk_render_product_text_box( $post ) {
 		'teeny'         => true,
 		'quicktags'     => false,
 		'tinymce'       => array(
-			'toolbar1'      => 'formatselect,bold,italic,bullist,numlist,link,unlink,undo,redo',
+			'toolbar1'      => 'formatselect,bold,italic,underline,bullist,numlist,link,unlink,undo,redo',
 			'block_formats' => 'Absatz=p;Zwischentitel=h3',
 			'content_style' => 'body { margin: 12px 16px; } h3 { font-size: 1.15em; margin: 1em 0 0.25em; } ul { list-style: disc; } ul, ol { padding-left: 1.5em; }',
 		),
