@@ -33,31 +33,36 @@ function sk_register_product_cpt() {
 		'show_in_rest' => true,
 		'rewrite'      => false,
 		'menu_icon'    => 'dashicons-admin-tools',
-		'supports'     => array( 'title', 'editor', 'page-attributes' ),
-		// The editor content is the card's text: a short label per group, then its points.
-		'template'     => array(
-			array( 'core/heading', array( 'level' => 3, 'placeholder' => 'Gruppe (z. B. Module)' ) ),
-			array( 'core/list' ),
-		),
+		// Edited like projects: a title and one text field, no block editor.
+		'supports'     => array( 'title', 'page-attributes' ),
 	) );
 }
 add_action( 'init', 'sk_register_product_cpt' );
 
-/**
- * The card text only knows labels, paragraphs and lists.
- */
-function sk_product_allowed_blocks( $allowed, $context ) {
-	if ( isset( $context->post ) && 'product' === $context->post->post_type ) {
-		return array( 'core/heading', 'core/paragraph', 'core/list', 'core/list-item' );
-	}
-	return $allowed;
-}
-add_filter( 'allowed_block_types_all', 'sk_product_allowed_blocks', 10, 2 );
-
 function sk_product_meta_box() {
+	add_meta_box( 'sk_product_text', 'Text', 'sk_render_product_text_box', 'product', 'normal', 'high' );
 	add_meta_box( 'sk_product_details', 'Art', 'sk_render_product_meta_box', 'product', 'side', 'high' );
 }
 add_action( 'add_meta_boxes', 'sk_product_meta_box' );
+
+/**
+ * The card's text, kept as the post content: short labels ("Zwischentitel") and their points.
+ * The field is named "content", so WordPress saves it like a normal editor.
+ */
+function sk_render_product_text_box( $post ) {
+	wp_editor( $post->post_content, 'skproducttext', array(
+		'textarea_name' => 'content',
+		'textarea_rows' => 14,
+		'media_buttons' => false,
+		'teeny'         => true,
+		'quicktags'     => false,
+		'tinymce'       => array(
+			'toolbar1'      => 'formatselect,bold,italic,bullist,numlist,link,unlink,undo,redo',
+			'block_formats' => 'Absatz=p;Zwischentitel=h3',
+			'content_style' => 'body { margin: 12px 16px; } h3 { font-size: 1.15em; margin: 1em 0 0.25em; } ul { list-style: disc; } ul, ol { padding-left: 1.5em; }',
+		),
+	) );
+}
 
 function sk_render_product_meta_box( $post ) {
 	wp_nonce_field( 'sk_save_product_meta', 'sk_product_nonce' );

@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function sk_maybe_upgrade() {
 	$schema = (int) get_option( 'sk_theme_schema', 0 );
-	if ( $schema >= 2 ) return;
+	if ( $schema >= 3 ) return;
 
 	if ( $schema < 1 ) {
 		sk_migrate_page_heroes();
@@ -14,10 +14,13 @@ function sk_maybe_upgrade() {
 	if ( $schema < 2 ) {
 		sk_migrate_product_content();
 	}
+	if ( $schema < 3 ) {
+		sk_migrate_product_blocks();
+	}
 	// Projects (1) and products (2) lost their public URLs.
 	flush_rewrite_rules( false );
 
-	update_option( 'sk_theme_schema', 2 );
+	update_option( 'sk_theme_schema', 3 );
 }
 
 /**
@@ -31,6 +34,25 @@ function sk_migrate_product_content() {
 	foreach ( get_posts( array( 'post_type' => 'product', 'post_status' => 'any', 'numberposts' => -1 ) ) as $product ) {
 		$content = preg_replace( '#^\s*<!-- wp:heading[^>]*-->\s*<h2[^>]*>\s*Das ist enthalten\s*</h2>\s*<!-- /wp:heading -->\s*#', '', $product->post_content, 1, $count );
 		if ( ! $count ) continue;
+		wp_update_post( wp_slash( array( 'ID' => $product->ID, 'post_content' => $content ) ) );
+	}
+
+	if ( $had_kses ) kses_init_filters();
+}
+
+/**
+ * Products are now edited in a classic text field instead of the block editor.
+ * Drop the block comments so the text is plain HTML there and still gets its
+ * paragraphs on the site (wpautop skips content that has blocks).
+ */
+function sk_migrate_product_blocks() {
+	$had_kses = false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' );
+	kses_remove_filters();
+
+	foreach ( get_posts( array( 'post_type' => 'product', 'post_status' => 'any', 'numberposts' => -1 ) ) as $product ) {
+		if ( ! has_blocks( $product->post_content ) ) continue;
+		$content = preg_replace( '#<!--\s*/?wp:.*?-->#s', '', $product->post_content );
+		$content = trim( preg_replace( '#\n\s*\n+#', "\n\n", $content ) );
 		wp_update_post( wp_slash( array( 'ID' => $product->ID, 'post_content' => $content ) ) );
 	}
 
