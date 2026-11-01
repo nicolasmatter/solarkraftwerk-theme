@@ -42,7 +42,8 @@ function sk_editor_data() {
 			'phone'  => get_theme_mod( 'sk_phone', '+41 234 43 21' ),
 			'email'  => get_theme_mod( 'sk_email', 'info@solarkraftwerk.ch' ),
 			'hours'  => get_theme_mod( 'sk_hours', 'Mo–Fr 08:00–17:00 Uhr' ),
-			'maps'   => get_theme_mod( 'sk_maps_embed', '' ),
+			// Only a stored lookup; the editor never waits for the geocoder.
+			'map'    => sk_map_embed_url( false ),
 		),
 	);
 }

@@ -1,6 +1,21 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Product types, in the order the overview lists them.
+ */
+function sk_product_types() {
+	return array(
+		'product' => 'Produkt',
+		'service' => 'Service',
+	);
+}
+
+function sk_product_type( $post_id ) {
+	$type = get_post_meta( $post_id, '_sk_product_type', true );
+	return isset( sk_product_types()[ $type ] ) ? $type : 'product';
+}
+
 function sk_register_product_cpt() {
 	register_post_type( 'product', array(
 		'labels' => array(
@@ -11,49 +26,50 @@ function sk_register_product_cpt() {
 			'all_items'     => 'Alle Produkte',
 			'menu_name'     => 'Produkte',
 		),
-		'public'       => true,
-		'has_archive'  => false,
-		'rewrite'      => array( 'slug' => 'produkte' ),
-		'menu_icon'    => 'dashicons-admin-tools',
-		'supports'     => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+		// Products only appear in the product sections, never on pages of their own.
+		'public'       => false,
+		'show_ui'      => true,
+		'show_in_menu' => true,
 		'show_in_rest' => true,
-		// The editor content is the detail page's "Das ist enthalten" part.
+		'rewrite'      => false,
+		'menu_icon'    => 'dashicons-admin-tools',
+		'supports'     => array( 'title', 'editor', 'page-attributes' ),
+		// The editor content is the card's text: a short label per group, then its points.
 		'template'     => array(
-			array( 'core/heading', array( 'content' => 'Das ist enthalten' ) ),
-			array( 'core/paragraph', array( 'placeholder' => 'Beschreibung des Produkts …' ) ),
+			array( 'core/heading', array( 'level' => 3, 'placeholder' => 'Gruppe (z. B. Module)' ) ),
 			array( 'core/list' ),
 		),
-	) );
-
-	register_taxonomy( 'product_group', 'product', array(
-		'labels' => array(
-			'name'          => 'Produktgruppen',
-			'singular_name' => 'Produktgruppe',
-		),
-		'hierarchical'      => true,
-		'public'            => true,
-		'show_in_rest'      => true,
-		'rewrite'           => array( 'slug' => 'produktgruppe' ),
-		// Products without a group land here; editors can rename it under Produktgruppen.
-		'default_term'      => array( 'name' => 'Basic', 'slug' => 'basic' ),
 	) );
 }
 add_action( 'init', 'sk_register_product_cpt' );
 
+/**
+ * The card text only knows labels, paragraphs and lists.
+ */
+function sk_product_allowed_blocks( $allowed, $context ) {
+	if ( isset( $context->post ) && 'product' === $context->post->post_type ) {
+		return array( 'core/heading', 'core/paragraph', 'core/list', 'core/list-item' );
+	}
+	return $allowed;
+}
+add_filter( 'allowed_block_types_all', 'sk_product_allowed_blocks', 10, 2 );
+
 function sk_product_meta_box() {
-	add_meta_box( 'sk_product_details', 'Produktdetails', 'sk_render_product_meta_box', 'product', 'normal', 'high' );
+	add_meta_box( 'sk_product_details', 'Art', 'sk_render_product_meta_box', 'product', 'side', 'high' );
 }
 add_action( 'add_meta_boxes', 'sk_product_meta_box' );
 
 function sk_render_product_meta_box( $post ) {
 	wp_nonce_field( 'sk_save_product_meta', 'sk_product_nonce' );
-	sk_image_field( $post, '_sk_hero_image', 'Titelbild im Seitenkopf (leer = Standardbild). Das Produktbild ist das Beitragsbild.' );
-	sk_meta_field( $post, '_sk_intro', 'Intro im Seitenkopf (z. B. „Die solide Photovoltaik-Grundausstattung für Ihr Einfamilienhaus.“)', 'textarea' );
-	echo '<h4>Technische Daten</h4>';
-	sk_meta_field( $post, '_sk_subtitle', 'Untertitel (z. B. Schrägdach - Novotegra Einlegesystem)' );
-	sk_meta_field( $post, '_sk_power_kwp', 'Leistung (z. B. 17.86 kWp)' );
-	sk_meta_field( $post, '_sk_warranty', 'Garantie (z. B. 25 Jahre)' );
-	sk_meta_field( $post, '_sk_modules', 'Anzahl Module' );
+	$current = sk_product_type( $post->ID );
+	foreach ( sk_product_types() as $value => $label ) {
+		printf(
+			'<p><label><input type="radio" name="_sk_product_type" value="%s"%s> %s</label></p>',
+			esc_attr( $value ),
+			checked( $current, $value, false ),
+			esc_html( $label )
+		);
+	}
 }
 
 function sk_save_product_meta( $post_id ) {
@@ -61,40 +77,22 @@ function sk_save_product_meta( $post_id ) {
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 	if ( ! current_user_can( 'edit_post', $post_id ) ) return;
 
-	foreach ( array( '_sk_subtitle', '_sk_power_kwp', '_sk_warranty', '_sk_modules' ) as $key ) {
-		if ( isset( $_POST[ $key ] ) ) {
-			update_post_meta( $post_id, $key, sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) );
-		}
-	}
-	if ( isset( $_POST['_sk_intro'] ) ) {
-		update_post_meta( $post_id, '_sk_intro', sanitize_textarea_field( wp_unslash( $_POST['_sk_intro'] ) ) );
-	}
-	if ( isset( $_POST['_sk_hero_image'] ) ) {
-		update_post_meta( $post_id, '_sk_hero_image', absint( $_POST['_sk_hero_image'] ) );
+	$type = isset( $_POST['_sk_product_type'] ) ? sanitize_key( $_POST['_sk_product_type'] ) : '';
+	if ( isset( sk_product_types()[ $type ] ) ) {
+		update_post_meta( $post_id, '_sk_product_type', $type );
 	}
 }
 add_action( 'save_post_product', 'sk_save_product_meta' );
 
 /**
- * The "Technische Daten" list shown on the detail page and the "Weitere Produkte" cards.
+ * Products used to have pages under /produkte/<name>/. Send those links to the overview.
  */
-function sk_product_specs( $post_id ) {
-	$subtitle = get_post_meta( $post_id, '_sk_subtitle', true );
-	$rows     = array(
-		'Leistung:'      => get_post_meta( $post_id, '_sk_power_kwp', true ),
-		'Garantie:'      => get_post_meta( $post_id, '_sk_warranty', true ),
-		'Anzahl Module:' => get_post_meta( $post_id, '_sk_modules', true ),
-	);
-	if ( ! $subtitle && ! array_filter( $rows ) ) return;
-
-	echo '<div class="sk-specs">';
-	if ( $subtitle ) {
-		echo '<p class="sk-specs__subtitle">' . esc_html( $subtitle ) . '</p>';
+function sk_redirect_old_product_urls() {
+	if ( ! is_404() ) return;
+	$path = trim( (string) wp_parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ), '/' );
+	if ( preg_match( '#(^|/)produkte/[^/]+$#', $path ) ) {
+		wp_safe_redirect( sk_page_url( 'produkte' ), 301 );
+		exit;
 	}
-	echo '<dl>';
-	foreach ( $rows as $label => $value ) {
-		if ( '' === $value ) continue;
-		echo '<div><dt>' . esc_html( $label ) . '</dt><dd>' . esc_html( $value ) . '</dd></div>';
-	}
-	echo '</dl></div>';
 }
+add_action( 'template_redirect', 'sk_redirect_old_product_urls' );

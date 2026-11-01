@@ -1,0 +1,15 @@
+{
+	"apiVersion": 3,
+	"name": "sk/team-photo",
+	"title": "Teamfoto mit Text",
+	"category": "solarkraftwerk",
+	"icon": "format-image",
+	"description": "Breites Foto (z. B. Teamfoto) mit frei formatierbarem Text darunter.",
+	"attributes": {
+		"imageId": { "type": "number", "default": 0 },
+		"align": { "type": "string", "default": "full" }
+	},
+	"supports": { "html": false, "align": [ "full" ], "anchor": true },
+	"editorScript": "sk-block-team-photo-editor",
+	"render": "file:./render.php"
+}

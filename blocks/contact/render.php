@@ -22,14 +22,13 @@ sk_section_open( $attributes );
 				<p><strong>Öffnungszeiten:</strong><br>
 				<?php echo esc_html( get_theme_mod( 'sk_hours', 'Mo–Fr 08:00–17:00 Uhr' ) ); ?></p>
 
-				<div class="sk-map">
-					<?php $maps_embed = get_theme_mod( 'sk_maps_embed', '' ); ?>
-					<?php if ( $maps_embed ) : ?>
-						<iframe src="<?php echo esc_url( $maps_embed ); ?>" width="100%" height="260" style="border:0;" loading="lazy"></iframe>
-					<?php else : ?>
-						<span>Kartenausschnitt (Google Maps)</span>
-					<?php endif; ?>
-				</div>
+				<?php $map_url = sk_map_embed_url(); ?>
+				<?php if ( $map_url ) : ?>
+					<div class="sk-map">
+						<iframe src="<?php echo esc_url( $map_url ); ?>" title="Karte: <?php echo esc_attr( sk_map_address() ); ?>" loading="lazy"></iframe>
+					</div>
+					<a class="sk-map__link" href="<?php echo esc_url( sk_map_link_url() ); ?>" target="_blank" rel="noopener">Grössere Karte anzeigen</a>
+				<?php endif; ?>
 			</div>
 
 			<div>

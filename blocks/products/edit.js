@@ -5,7 +5,7 @@
 	var be = wp.blockEditor;
 	var PanelBody = wp.components.PanelBody;
 	var SelectControl = wp.components.SelectControl;
-	var RangeControl = wp.components.RangeControl;
+	var TextControl = wp.components.TextControl;
 	var ServerSideRender = wp.serverSideRender;
 	var sk = window.skEditor;
 
@@ -23,33 +23,32 @@
 					value: attributes.mode,
 					options: [
 						{ label: 'Vorschau (Teaser)', value: 'teaser' },
-						{ label: 'Vollständiger Katalog', value: 'catalog' },
+						{ label: 'Vollständige Übersicht', value: 'catalog' },
 					],
+					help: isTeaser ? 'Zeigt alle Produkte; ein Klick führt zum Produkt in der Übersicht.' : null,
 					onChange: function ( value ) { setAttributes( { mode: value } ); },
 					__nextHasNoMarginBottom: true,
 				} ),
 			];
 
 			if ( isTeaser ) {
+				controls.push( sk.linkUrlControl( attributes, setAttributes, 'Leer lassen für die Seite „Produkte“.' ) );
+			} else {
 				controls.push(
-					el( sk.PostPicker, {
-						key: 'ids',
-						postType: 'product',
-						label: 'Produkte auswählen',
-						help: 'Ohne Auswahl werden die ersten Produkte gemäss „Reihenfolge“ gezeigt.',
-						value: attributes.ids,
-						onChange: function ( value ) { setAttributes( { ids: value } ); },
-					} ),
-					attributes.ids.length ? null : el( RangeControl, {
-						key: 'limit',
-						label: 'Anzahl Produkte',
-						value: attributes.limit,
-						min: 1,
-						max: 6,
-						onChange: function ( value ) { setAttributes( { limit: value } ); },
+					el( TextControl, {
+						key: 'productsHeading',
+						label: 'Überschrift Produkte',
+						value: attributes.productsHeading,
+						onChange: function ( value ) { setAttributes( { productsHeading: value } ); },
 						__nextHasNoMarginBottom: true,
 					} ),
-					sk.linkUrlControl( attributes, setAttributes, 'Leer lassen für die Seite „Produkte“.' )
+					el( TextControl, {
+						key: 'servicesHeading',
+						label: 'Überschrift Services',
+						value: attributes.servicesHeading,
+						onChange: function ( value ) { setAttributes( { servicesHeading: value } ); },
+						__nextHasNoMarginBottom: true,
+					} )
 				);
 			}
 
@@ -60,7 +59,12 @@
 						isTeaser ? sk.heading( attributes, setAttributes ) : null,
 						el( ServerSideRender, {
 							block: 'sk/products',
-							attributes: { mode: attributes.mode, limit: attributes.limit, ids: attributes.ids, editorPreview: true },
+							attributes: {
+								mode: attributes.mode,
+								productsHeading: attributes.productsHeading,
+								servicesHeading: attributes.servicesHeading,
+								editorPreview: true,
+							},
 						} ),
 						isTeaser ? sk.moreLink( attributes, setAttributes ) : null
 					)

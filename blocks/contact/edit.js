@@ -47,7 +47,9 @@
 								detail( 'E-Mail:', [ contact.email ] ),
 								detail( 'Öffnungszeiten:', [ contact.hours ] ),
 								el( 'div', { className: 'sk-map' },
-									el( 'span', {}, contact.maps ? 'Google Maps (wird auf der Website angezeigt)' : 'Kartenausschnitt (Google Maps)' )
+									contact.map
+										? el( 'iframe', { src: contact.map, title: 'Karte', loading: 'lazy' } )
+										: el( 'span', {}, 'Karte erscheint, sobald die Adresse gefunden wurde (Customizer → Kontaktangaben).' )
 								)
 							),
 							el( 'div', {},

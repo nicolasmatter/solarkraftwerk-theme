@@ -6,13 +6,35 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function sk_maybe_upgrade() {
 	$schema = (int) get_option( 'sk_theme_schema', 0 );
-	if ( $schema >= 1 ) return;
+	if ( $schema >= 2 ) return;
 
-	sk_migrate_page_heroes();
-	// Projects lost their public URLs.
+	if ( $schema < 1 ) {
+		sk_migrate_page_heroes();
+	}
+	if ( $schema < 2 ) {
+		sk_migrate_product_content();
+	}
+	// Projects (1) and products (2) lost their public URLs.
 	flush_rewrite_rules( false );
 
-	update_option( 'sk_theme_schema', 1 );
+	update_option( 'sk_theme_schema', 2 );
+}
+
+/**
+ * Product text opened with a "Das ist enthalten" heading for the old detail page.
+ * The overview cards are headed by the product's title, so drop it.
+ */
+function sk_migrate_product_content() {
+	$had_kses = false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' );
+	kses_remove_filters();
+
+	foreach ( get_posts( array( 'post_type' => 'product', 'post_status' => 'any', 'numberposts' => -1 ) ) as $product ) {
+		$content = preg_replace( '#^\s*<!-- wp:heading[^>]*-->\s*<h2[^>]*>\s*Das ist enthalten\s*</h2>\s*<!-- /wp:heading -->\s*#', '', $product->post_content, 1, $count );
+		if ( ! $count ) continue;
+		wp_update_post( wp_slash( array( 'ID' => $product->ID, 'post_content' => $content ) ) );
+	}
+
+	if ( $had_kses ) kses_init_filters();
 }
 add_action( 'init', 'sk_maybe_upgrade', 20 );
 

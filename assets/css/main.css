@@ -187,6 +187,11 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-grid { display: grid; gap: 16px; }
 .sk-grid--2 { grid-template-columns: repeat(2, 1fr); }
 .sk-grid--3 { grid-template-columns: repeat(3, 1fr); }
+/* Equal-width cards: three per row, fewer once a card would get narrower than 340px.
+   auto-fill keeps empty tracks, so a short row's cards match the full rows above. */
+.sk-grid--cards {
+	grid-template-columns: repeat(auto-fill, minmax(max(min(340px, 100%), calc((100% - 32px) / 3)), 1fr));
+}
 
 /* Cards (products / projects grid) */
 .sk-card {
@@ -200,11 +205,51 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-card__image img { width: 100%; height: 100%; object-fit: cover; }
 .sk-card__label { padding: 24px 32px; }
 .sk-card__label h3 { color: var(--sk-white); margin: 0; }
-.sk-card__label--panel h3 { font-size: 1.6rem; }
 .sk-card__meta {
 	display: flex; justify-content: space-between; margin-top: 1.5rem;
 	color: var(--sk-white); font-size: 1rem;
 }
+
+.sk-card--product h3 { transition: color 0.2s ease; }
+.sk-card--product:hover h3 { color: var(--sk-orange); }
+
+/* Produkte overview: one group per product type, cards with a dark title bar */
+.sk-product-group + .sk-product-group { margin-top: 56px; }
+.sk-product-card {
+	background: var(--sk-panel);
+	border-radius: 8px;
+	overflow: hidden;
+}
+.sk-product-card__title { background: #2e3337; padding: 24px 32px; }
+.sk-product-card__title h3 { color: var(--sk-white); margin: 0; }
+.sk-product-card__body { padding: 32px 32px 40px; }
+.sk-product-card__body > :first-child { margin-top: 0; }
+.sk-product-card__body > :last-child { margin-bottom: 0; }
+.sk-product-card__body :is(h2, h3, h4, h5, h6) { font-size: 1rem; font-weight: 500; margin: 24px 0 8px; }
+.sk-product-card__body p { margin: 0 0 8px; }
+.sk-product-card__body ul,
+.sk-product-card__body ol { margin: 0; padding-left: 1.25em; line-height: 26px; }
+.sk-product-card__body ul { list-style: disc; }
+.sk-product-card__body a { text-decoration: underline; }
+
+/* Teamfoto mit Text: wide rounded photo, free-form text below in large type */
+.sk-team-photo__image { aspect-ratio: 1388 / 450; border-radius: 8px; overflow: hidden; background: var(--sk-panel); }
+.sk-team-photo__image img { width: 100%; height: 100%; object-fit: cover; }
+.sk-team-photo__text {
+	max-width: 1200px;
+	/* The site's spacing unit: 56px, 24px on small screens. */
+	margin: var(--sk-gutter) auto 0;
+	font-size: clamp(1.25rem, 2.4vw, 2.07rem);
+	font-weight: 500;
+	line-height: 1.2;
+}
+.sk-team-photo__text > :first-child { margin-top: 0; }
+.sk-team-photo__text > :last-child { margin-bottom: 0; }
+.sk-team-photo__text :is(p, ul, ol) { margin: 0 0 0.75em; }
+.sk-team-photo__text ul { list-style: disc; padding-left: 1.25em; }
+.sk-team-photo__text ol { padding-left: 1.25em; }
+.sk-team-photo__text a { text-decoration: underline; }
+.sk-team-photo__text :is(h2, h3, h4) { margin: 1em 0 0.5em; }
 
 .sk-link {
 	display: inline-block;
@@ -237,45 +282,6 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-project-row__stats dt { font-weight: 400; margin: 0; }
 .sk-project-row__stats dd { font-weight: 600; margin: 0; }
 
-/* Produkt detail page (single-product.php) */
-.sk-product .sk-container { display: flex; flex-direction: column; gap: 56px; }
-.sk-product h2 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; margin: 0 0 24px; }
-.sk-back-link { display: inline-block; margin-bottom: 24px; color: var(--sk-orange); }
-.sk-back-link:hover { text-decoration: underline; }
-.sk-product__main {
-	display: grid;
-	grid-template-columns: 780fr 608fr;
-	border-radius: 8px;
-	overflow: hidden;
-}
-.sk-product__image { aspect-ratio: 780 / 520; background: #dfe3e3; overflow: hidden; }
-.sk-product__image img { width: 100%; height: 100%; object-fit: cover; }
-.sk-product__panel, .sk-product-card__panel {
-	background: var(--sk-panel);
-	padding: 24px 32px;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: 32px;
-}
-.sk-product__panel h2, .sk-product-card__panel h3 { margin: 0; }
-.sk-product__panel .sk-button { margin-top: 0; }
-.sk-button.sk-button--large { padding: 16px 32px; font-size: 1.25rem; }
-.sk-product__content { line-height: 1.5; }
-.sk-product__content > * { max-width: 900px; }
-.sk-product__content > :first-child { margin-top: 0; }
-.sk-product__content > :last-child { margin-bottom: 0; }
-.sk-product-card { display: block; border-radius: 8px; overflow: hidden; }
-.sk-product-card .sk-card__image { aspect-ratio: 686 / 450; }
-.sk-product-card:hover h3 { color: var(--sk-orange); }
-
-/* "Technische Daten": subtitle, then label/value rows */
-.sk-specs { align-self: stretch; }
-.sk-specs__subtitle { margin: 0 0 20px; }
-.sk-specs dl { margin: 0; display: flex; flex-direction: column; gap: 20px; }
-.sk-specs dl div { display: flex; justify-content: space-between; gap: 10px; }
-.sk-specs dt, .sk-specs dd { margin: 0; }
-
 /* Über uns team: photo left, details right on a panel, like the Referenzen rows */
 .sk-team-group { display: flex; flex-direction: column; gap: 24px; }
 .sk-team-member {
@@ -302,7 +308,10 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 	margin-top: 1.5rem; background: #3a4444; color: var(--sk-white);
 	border-radius: 4px; min-height: 260px; display: flex;
 	align-items: center; justify-content: center; overflow: hidden;
+	text-align: center; padding: 0;
 }
+.sk-map iframe { display: block; width: 100%; height: 320px; border: 0; }
+.sk-map__link { display: inline-block; margin-top: 8px; font-size: 0.875rem; text-decoration: underline; }
 .sk-form { display: flex; flex-direction: column; gap: 4px; }
 .sk-form label { font-weight: 600; margin-top: 12px; }
 .sk-form input, .sk-form textarea {
@@ -368,32 +377,21 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 
 /* Scroll reveal: blocks fade up as they enter the viewport (main.js adds .is-in).
    Keep this selector list in sync with REVEAL in main.js. */
-.sk-motion :is(.sk-section h2, .sk-back-link, .sk-product__main, .sk-product__content > *, .sk-grid > *, .sk-project-row, .sk-team-member, .sk-link) {
+.sk-motion :is(.sk-section h2, .sk-grid > *, .sk-project-row, .sk-team-member, .sk-team-photo__image, .sk-team-photo__text, .sk-link) {
 	transition: opacity 0.7s var(--sk-ease), transform 0.7s var(--sk-ease);
 }
-.sk-motion :is(.sk-section h2, .sk-back-link, .sk-product__main, .sk-product__content > *, .sk-grid > *, .sk-project-row, .sk-team-member, .sk-link):not(.is-in) {
+.sk-motion :is(.sk-section h2, .sk-grid > *, .sk-project-row, .sk-team-member, .sk-team-photo__image, .sk-team-photo__text, .sk-link):not(.is-in) {
 	opacity: 0;
 	transform: translateY(32px);
 }
 /* Cards in a row come in one after the other. */
 .sk-motion .sk-grid--2 > :nth-child(2n),
-.sk-motion .sk-grid--3 > :nth-child(3n + 2) { transition-delay: 0.1s; }
-.sk-motion .sk-grid--3 > :nth-child(3n) { transition-delay: 0.2s; }
-
-/* "Technische Daten" rows tick in one by one once their panel is visible. */
-.sk-motion .sk-specs__subtitle,
-.sk-motion .sk-specs dl div {
-	transition: opacity 0.5s ease, transform 0.5s var(--sk-ease);
-}
-.sk-motion .sk-specs:not(.is-in) :is(.sk-specs__subtitle, dl div) { opacity: 0; transform: translateX(-12px); }
-.sk-motion .sk-specs dl div:nth-child(1) { transition-delay: 0.12s; }
-.sk-motion .sk-specs dl div:nth-child(2) { transition-delay: 0.24s; }
-.sk-motion .sk-specs dl div:nth-child(3) { transition-delay: 0.36s; }
+.sk-motion :is(.sk-grid--3, .sk-grid--cards) > :nth-child(3n + 2) { transition-delay: 0.1s; }
+.sk-motion :is(.sk-grid--3, .sk-grid--cards) > :nth-child(3n) { transition-delay: 0.2s; }
 
 /* Hover: cards keep their size, only the image zooms inside its frame. */
-.sk-motion :is(.sk-card, .sk-product-card, .sk-product__image) img { transition: transform 0.7s var(--sk-ease); }
-.sk-motion :is(.sk-card, .sk-product-card):hover img,
-.sk-motion .sk-product__main:hover .sk-product__image img { transform: scale(1.06); }
+.sk-motion .sk-card img { transition: transform 0.7s var(--sk-ease); }
+.sk-motion .sk-card:hover img { transform: scale(1.06); }
 
 /* Responsive */
 @media (max-width: 960px) {
@@ -426,8 +424,8 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 
 	.sk-grid--2, .sk-grid--3 { grid-template-columns: 1fr; }
 	.sk-project-row { grid-template-columns: 1fr; }
-	.sk-product__main { grid-template-columns: 1fr; }
 	.sk-project-row__image { aspect-ratio: 16 / 10; }
+	.sk-team-photo__image { aspect-ratio: 3 / 2; }
 	.sk-team-member { grid-template-columns: 1fr; gap: 0; }
 	.sk-hero__overlay { justify-content: flex-start; }
 	.sk-hero .sk-cta { margin-left: 0; }

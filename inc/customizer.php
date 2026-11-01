@@ -24,7 +24,7 @@ function sk_customize_register( $wp_customize ) {
 			'sk_company_legal'  => array( 'label' => 'Firma (für Copyright)', 'default' => 'Netzwerk Nagel GmbH, Solarkraftwerk' ),
 			'sk_linkedin_url'   => array( 'label' => 'LinkedIn URL (leer = ausblenden)', 'default' => '' ),
 			'sk_facebook_url'   => array( 'label' => 'Facebook URL (leer = ausblenden)', 'default' => '' ),
-			'sk_maps_embed'     => array( 'label' => 'Google Maps Embed-URL (optional)', 'default' => '' ),
+			'sk_map_address'    => array( 'label' => 'Kartenadresse (leer = Strasse und Ort von oben)', 'default' => '' ),
 		),
 		'sk_copy' => array(
 			'sk_cta_title'    => array( 'label' => 'CTA-Button Titel', 'default' => 'Kostenlose Offerte' ),

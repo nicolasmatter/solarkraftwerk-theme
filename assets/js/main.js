@@ -34,8 +34,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	if ( ! document.documentElement.classList.contains( 'sk-motion' ) ) return;
 
 	// Keep in sync with the scroll-reveal selector list in main.css.
-	var REVEAL = '.sk-section h2, .sk-back-link, .sk-product__main, .sk-product__content > *, .sk-grid > *, .sk-project-row, .sk-team-member, .sk-link';
-	var targets = document.querySelectorAll( REVEAL + ', .sk-specs' );
+	var REVEAL = '.sk-section h2, .sk-grid > *, .sk-project-row, .sk-team-member, .sk-team-photo__image, .sk-team-photo__text, .sk-link';
+	var targets = document.querySelectorAll( REVEAL );
 
 	if ( ! ( 'IntersectionObserver' in window ) ) {
 		targets.forEach( function ( el ) { el.classList.add( 'is-in' ); } );
