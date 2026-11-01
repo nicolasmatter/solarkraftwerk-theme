@@ -58,6 +58,40 @@ function sk_customize_register( $wp_customize ) {
 		'type'        => 'text',
 	) );
 
+	$wp_customize->add_section( 'sk_seo', array(
+		'title'       => 'Suchmaschinen',
+		'priority'    => 30.4,
+		'description' => 'Beschreibung der Website in Google und in Link-Vorschauen. Gilt für die Startseite und für alle Seiten ohne eigene Beschreibung (Feld „Suchmaschinen & Teilen“ beim Bearbeiten einer Seite).',
+	) );
+	$wp_customize->add_setting( 'sk_seo_description', array(
+		'default'           => '',
+		'sanitize_callback' => 'sanitize_textarea_field',
+	) );
+	$wp_customize->add_control( 'sk_seo_description', array(
+		'label'       => 'Standard-Beschreibung',
+		'description' => 'Ideal sind 120–160 Zeichen. Leer = Untertitel der Website (Einstellungen → Allgemein), sonst ein allgemeiner Satz über das Unternehmen.',
+		'section'     => 'sk_seo',
+		'type'        => 'textarea',
+	) );
+
+	// Machine-readable opening hours for search engines (inc/seo.php); the displayed text stays "Öffnungszeiten" above.
+	$wp_customize->add_section( 'sk_opening_hours', array(
+		'title'       => 'Öffnungszeiten (für Google)',
+		'priority'    => 30.5,
+		'description' => 'Für Suchmaschinen und KI-Assistenten, z. B. 08:00-17:00 oder 08:00-12:00, 13:30-17:00. Leer = geschlossen. Solange alle Felder leer sind, wird der Text „Öffnungszeiten“ unter Kontaktangaben ausgewertet. Bitte beides gleich halten.',
+	) );
+	foreach ( sk_weekdays() as $day => $weekday ) {
+		$wp_customize->add_setting( "sk_hours_{$day}", array(
+			'default'           => '',
+			'sanitize_callback' => 'sk_sanitize_time_ranges',
+		) );
+		$wp_customize->add_control( "sk_hours_{$day}", array(
+			'label'   => $weekday['name'],
+			'section' => 'sk_opening_hours',
+			'type'    => 'text',
+		) );
+	}
+
 	$wp_customize->add_section( 'sk_colors', array(
 		'title'       => 'Farben',
 		'priority'    => 32,
