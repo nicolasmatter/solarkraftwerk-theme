@@ -1,12 +1,13 @@
 /* Solar Kraftwerk — main stylesheet, built from the Figma design */
 
 :root {
-	/* Colors and font come from theme.json so the editor offers the same palette. */
+	/* Colors and font come from theme.json so the editor offers the same palette;
+	   the colors can be changed under Customizer → Farben (inc/customizer.php). */
 	--sk-dark: var(--wp--preset--color--dark, #383e42);
 	--sk-orange: var(--wp--preset--color--orange, #ff6a00);
 	--sk-white: var(--wp--preset--color--white, #ffffff);
 	--sk-panel: var(--wp--preset--color--panel, #eef2f2);
-	--sk-text-muted: rgba(56, 62, 66, 0.7);
+	--sk-text-muted: color-mix(in srgb, var(--sk-dark) 70%, transparent);
 	--sk-font: var(--wp--preset--font-family--roboto, Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
 	--sk-content-size: var(--wp--style--global--content-size, 1372px);
 	--sk-gutter: 56px;
@@ -220,7 +221,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 	border-radius: 8px;
 	overflow: hidden;
 }
-.sk-product-card__title { background: #2e3337; padding: 24px 32px; }
+.sk-product-card__title { background: var(--sk-dark); padding: 24px 32px; }
 .sk-product-card__title h3 { color: var(--sk-white); margin: 0; }
 .sk-product-card__body { padding: 32px 32px 40px; }
 .sk-product-card__body > :first-child { margin-top: 0; }
@@ -278,7 +279,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-project-row__stats { margin: 0; }
 .sk-project-row__stats div {
 	display: flex; justify-content: space-between; max-width: 420px;
-	padding: 6px 0; border-bottom: 1px solid rgba(56, 62, 66, 0.1);
+	padding: 6px 0; border-bottom: 1px solid color-mix(in srgb, var(--sk-dark) 10%, transparent);
 }
 .sk-project-row__stats dt { font-weight: 400; margin: 0; }
 .sk-project-row__stats dd { font-weight: 600; margin: 0; }
@@ -306,7 +307,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 /* Kontakt */
 .sk-kontakt-grid { align-items: start; }
 .sk-map {
-	margin-top: 1.5rem; background: #3a4444; color: var(--sk-white);
+	margin-top: 1.5rem; background: var(--sk-dark); color: var(--sk-white);
 	border-radius: 4px; min-height: 260px; display: flex;
 	align-items: center; justify-content: center; overflow: hidden;
 	text-align: center; padding: 0;
@@ -328,7 +329,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 }
 .sk-map .leaflet-bar a:hover { background: var(--sk-orange); }
 .sk-map .leaflet-bar a.leaflet-disabled { background: var(--sk-dark); color: rgba(255, 255, 255, 0.35); }
-.sk-map .leaflet-control-attribution { background: rgba(56, 62, 66, 0.8); color: rgba(255, 255, 255, 0.75); border-top-left-radius: 4px; }
+.sk-map .leaflet-control-attribution { background: color-mix(in srgb, var(--sk-dark) 80%, transparent); color: rgba(255, 255, 255, 0.75); border-top-left-radius: 4px; }
 .sk-map .leaflet-control-attribution a { color: var(--sk-white); }
 .sk-map__marker { background: none; border: none; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); }
 .sk-form { display: flex; flex-direction: column; gap: 4px; }

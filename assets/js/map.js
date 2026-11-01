@@ -3,8 +3,9 @@
 ( function ( L ) {
 	if ( ! L ) return;
 
+	// The pin takes the site's accent color (Customizer → Farben).
 	var MARKER = '<svg viewBox="0 0 40 52" width="40" height="52" aria-hidden="true">'
-		+ '<path d="M20 51C20 51 38 32.5 38 20A18 18 0 0 0 2 20C2 32.5 20 51 20 51Z" fill="#ff6a00" stroke="#fff" stroke-width="2"/>'
+		+ '<path d="M20 51C20 51 38 32.5 38 20A18 18 0 0 0 2 20C2 32.5 20 51 20 51Z" style="fill: var(--sk-orange)" stroke="#fff" stroke-width="2"/>'
 		+ '<rect x="11" y="11" width="8" height="8" rx="2" fill="#fff"/><rect x="21" y="11" width="8" height="8" rx="2" fill="#fff"/>'
 		+ '<rect x="11" y="21" width="8" height="8" rx="2" fill="#fff"/><rect x="21" y="21" width="8" height="8" rx="2" fill="#fff"/>'
 		+ '</svg>';

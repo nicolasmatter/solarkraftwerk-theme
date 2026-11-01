@@ -57,5 +57,58 @@ function sk_customize_register( $wp_customize ) {
 		'section'     => 'sk_copy',
 		'type'        => 'text',
 	) );
+
+	$wp_customize->add_section( 'sk_colors', array(
+		'title'       => 'Farben',
+		'priority'    => 32,
+		'description' => 'Die Farben der Website. Sie stehen auch im Block-Editor zur Auswahl.',
+	) );
+	foreach ( sk_colors() as $slug => $color ) {
+		$wp_customize->add_setting( "sk_color_{$slug}", array(
+			'default'           => $color['default'],
+			'sanitize_callback' => 'sanitize_hex_color',
+		) );
+		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, "sk_color_{$slug}", array(
+			'label'       => $color['name'],
+			'description' => $color['use'],
+			'section'     => 'sk_colors',
+		) ) );
+	}
 }
 add_action( 'customize_register', 'sk_customize_register' );
+
+/**
+ * The site's palette, in the order of theme.json. Defaults match theme.json.
+ */
+function sk_colors() {
+	return array(
+		'dark'   => array( 'name' => 'Anthrazit', 'default' => '#383e42', 'use' => 'Text, Kopf- und Fusszeile, Kartenbalken, Produkt-Titel' ),
+		'orange' => array( 'name' => 'Orange', 'default' => '#ff6a00', 'use' => 'Akzente: Offerte-Button, Hover, Kartenmarker' ),
+		'panel'  => array( 'name' => 'Hellgrau', 'default' => '#eef2f2', 'use' => 'Hintergrund von Flächen und Karten' ),
+		'white'  => array( 'name' => 'Weiss', 'default' => '#ffffff', 'use' => 'Seitenhintergrund, Text auf dunklen Flächen' ),
+	);
+}
+
+/**
+ * Feed the Customizer colors into the theme.json palette, so the CSS variables
+ * (--wp--preset--color--*) and the editor's color picker both use them.
+ */
+function sk_theme_json_colors( $theme_json ) {
+	$palette = array();
+	foreach ( sk_colors() as $slug => $color ) {
+		$value     = get_theme_mod( "sk_color_{$slug}", $color['default'] );
+		$palette[] = array(
+			'slug'  => $slug,
+			'name'  => $color['name'],
+			'color' => $value ? $value : $color['default'],
+		);
+	}
+	return $theme_json->update_with( array(
+		'version'  => 2,
+		'settings' => array( 'color' => array( 'palette' => $palette ) ),
+	) );
+}
+add_filter( 'wp_theme_json_data_theme', 'sk_theme_json_colors' );
+
+// The generated styles are cached; rebuild them once new colors are saved.
+add_action( 'customize_save_after', 'wp_clean_theme_json_cache' );
