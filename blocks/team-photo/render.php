@@ -9,6 +9,7 @@ $has_link = '' !== trim( wp_strip_all_tags( isset( $attributes['linkText'] ) ? $
 ?>
 <section <?php echo get_block_wrapper_attributes( array( 'class' => 'sk-section sk-block-section sk-team-photo' ) ); ?>>
 	<div class="sk-container">
+		<?php sk_block_heading( isset( $attributes['heading'] ) ? $attributes['heading'] : '' ); ?>
 		<?php
 		if ( $image_id ) :
 			$image = wp_get_attachment_image( $image_id, 'full', false, array( 'sizes' => '(max-width: 1484px) 100vw, 1388px' ) );

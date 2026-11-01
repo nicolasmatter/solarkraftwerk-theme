@@ -67,6 +67,7 @@
 				),
 				el( 'section', blockProps,
 					el( 'div', { className: 'sk-container' },
+						sk.heading( attributes, setAttributes ),
 						image,
 						el( 'div', { className: 'sk-team-photo__text' },
 							el( be.InnerBlocks, { template: TEMPLATE } )
@@ -85,7 +86,7 @@
 				title: 'Team-Teaser',
 				description: 'Teamfoto mit Text und einem Link zur Team-Seite, z. B. für die Startseite.',
 				icon: 'groups',
-				attributes: { linkText: 'Mehr über uns' },
+				attributes: { heading: 'Unser Team', linkText: 'Mehr über uns' },
 				scope: [ 'inserter' ],
 			},
 		],

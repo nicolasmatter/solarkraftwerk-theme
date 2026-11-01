@@ -6,6 +6,7 @@
 	"icon": "format-image",
 	"description": "Breites Foto (z. B. Teamfoto) mit frei formatierbarem Text darunter, optional mit Link (z. B. als Team-Teaser auf der Startseite).",
 	"attributes": {
+		"heading": { "type": "string", "default": "" },
 		"imageId": { "type": "number", "default": 0 },
 		"linkText": { "type": "string", "default": "" },
 		"linkUrl": { "type": "string", "default": "" },
