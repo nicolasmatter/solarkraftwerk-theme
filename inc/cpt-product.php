@@ -16,6 +16,22 @@ function sk_product_type( $post_id ) {
 	return isset( sk_product_types()[ $type ] ) ? $type : 'product';
 }
 
+/**
+ * Background colors for a product's title bar. Without a choice it follows the type.
+ */
+function sk_product_colors() {
+	return array(
+		'orange' => 'Orange',
+		'dark'   => 'Grau',
+	);
+}
+
+function sk_product_color( $post_id ) {
+	$color = get_post_meta( $post_id, '_sk_product_color', true );
+	if ( isset( sk_product_colors()[ $color ] ) ) return $color;
+	return 'service' === sk_product_type( $post_id ) ? 'dark' : 'orange';
+}
+
 function sk_register_product_cpt() {
 	register_post_type( 'product', array(
 		'labels' => array(
@@ -41,7 +57,7 @@ add_action( 'init', 'sk_register_product_cpt' );
 
 function sk_product_meta_box() {
 	add_meta_box( 'sk_product_text', 'Text', 'sk_render_product_text_box', 'product', 'normal', 'high' );
-	add_meta_box( 'sk_product_details', 'Art', 'sk_render_product_meta_box', 'product', 'side', 'high' );
+	add_meta_box( 'sk_product_details', 'Art und Farbe', 'sk_render_product_meta_box', 'product', 'side', 'high' );
 }
 add_action( 'add_meta_boxes', 'sk_product_meta_box' );
 
@@ -75,6 +91,17 @@ function sk_render_product_meta_box( $post ) {
 			esc_html( $label )
 		);
 	}
+
+	$color = get_post_meta( $post->ID, '_sk_product_color', true );
+	echo '<p><strong>Titel-Hintergrund</strong></p>';
+	foreach ( array( '' => 'Automatisch (Produkt: Orange, Service: Grau)' ) + sk_product_colors() as $value => $label ) {
+		printf(
+			'<p><label><input type="radio" name="_sk_product_color" value="%s"%s> %s</label></p>',
+			esc_attr( $value ),
+			checked( isset( sk_product_colors()[ $color ] ) ? $color : '', $value, false ),
+			esc_html( $label )
+		);
+	}
 }
 
 function sk_save_product_meta( $post_id ) {
@@ -85,6 +112,13 @@ function sk_save_product_meta( $post_id ) {
 	$type = isset( $_POST['_sk_product_type'] ) ? sanitize_key( $_POST['_sk_product_type'] ) : '';
 	if ( isset( sk_product_types()[ $type ] ) ) {
 		update_post_meta( $post_id, '_sk_product_type', $type );
+	}
+
+	$color = isset( $_POST['_sk_product_color'] ) ? sanitize_key( $_POST['_sk_product_color'] ) : '';
+	if ( isset( sk_product_colors()[ $color ] ) ) {
+		update_post_meta( $post_id, '_sk_product_color', $color );
+	} else {
+		delete_post_meta( $post_id, '_sk_product_color' );
 	}
 }
 add_action( 'save_post_product', 'sk_save_product_meta' );

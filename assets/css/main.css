@@ -213,8 +213,11 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 
 .sk-card--product h3 { transition: color 0.2s ease; }
 .sk-card--product:hover h3 { color: var(--sk-orange); }
+/* Products choose an orange or grey title (inc/cpt-product.php); on orange the hover turns the title dark. */
+.sk-card--orange { background: var(--sk-orange); }
+.sk-card--orange.sk-card--product:hover h3 { color: var(--sk-dark); }
 
-/* Produkte overview: one group per product type, cards with a dark title bar */
+/* Produkte overview: one group per product type, cards with an orange or grey title bar */
 .sk-product-group + .sk-product-group { margin-top: 56px; }
 .sk-product-card {
 	background: var(--sk-panel);
@@ -223,6 +226,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 }
 .sk-product-card__title { background: var(--sk-dark); padding: 24px 32px; }
 .sk-product-card__title h3 { color: var(--sk-white); margin: 0; }
+.sk-product-card--orange .sk-product-card__title { background: var(--sk-orange); }
 .sk-product-card__body { padding: 32px 32px 40px; }
 .sk-product-card__body > :first-child { margin-top: 0; }
 .sk-product-card__body > :last-child { margin-bottom: 0; }

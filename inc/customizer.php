@@ -82,8 +82,8 @@ add_action( 'customize_register', 'sk_customize_register' );
  */
 function sk_colors() {
 	return array(
-		'dark'   => array( 'name' => 'Anthrazit', 'default' => '#383e42', 'use' => 'Text, Kopf- und Fusszeile, Kartenbalken, Produkt-Titel' ),
-		'orange' => array( 'name' => 'Orange', 'default' => '#ff6a00', 'use' => 'Akzente: Offerte-Button, Hover, Kartenmarker' ),
+		'dark'   => array( 'name' => 'Anthrazit', 'default' => '#383e42', 'use' => 'Text, Kopf- und Fusszeile, Kartenbalken, graue Produkt-Titel' ),
+		'orange' => array( 'name' => 'Orange', 'default' => '#ff6a00', 'use' => 'Akzente: Offerte-Button, Hover, Kartenmarker, orange Produkt-Titel' ),
 		'panel'  => array( 'name' => 'Hellgrau', 'default' => '#eef2f2', 'use' => 'Hintergrund von Flächen und Karten' ),
 		'white'  => array( 'name' => 'Weiss', 'default' => '#ffffff', 'use' => 'Seitenhintergrund, Text auf dunklen Flächen' ),
 	);

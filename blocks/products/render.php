@@ -30,7 +30,7 @@ if ( 'catalog' === $mode ) :
 				<?php sk_block_heading( $headings[ $type ] ); ?>
 				<div class="sk-grid sk-grid--cards">
 					<?php foreach ( $products as $sk_product ) : ?>
-						<article class="sk-product-card" id="produkt-<?php echo esc_attr( $sk_product->ID ); ?>">
+						<article class="sk-product-card sk-product-card--<?php echo esc_attr( sk_product_color( $sk_product->ID ) ); ?>" id="produkt-<?php echo esc_attr( $sk_product->ID ); ?>">
 							<div class="sk-product-card__title"><h3><?php echo esc_html( get_the_title( $sk_product ) ); ?></h3></div>
 							<div class="sk-product-card__body"><?php echo apply_filters( 'the_content', $sk_product->post_content ); ?></div>
 						</article>
@@ -50,7 +50,7 @@ else :
 		?>
 		<div class="sk-grid sk-grid--cards">
 			<?php foreach ( $products as $sk_product ) : ?>
-				<a class="sk-card sk-card--product" href="<?php echo esc_url( $overview_url . '#produkt-' . $sk_product->ID ); ?>">
+				<a class="sk-card sk-card--product sk-card--<?php echo esc_attr( sk_product_color( $sk_product->ID ) ); ?>" href="<?php echo esc_url( $overview_url . '#produkt-' . $sk_product->ID ); ?>">
 					<div class="sk-card__label"><h3><?php echo esc_html( get_the_title( $sk_product ) ); ?></h3></div>
 				</a>
 			<?php endforeach; ?>
