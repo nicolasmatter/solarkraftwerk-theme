@@ -53,6 +53,7 @@ require get_template_directory() . '/inc/cpt-product.php';
 require get_template_directory() . '/inc/cpt-team.php';
 require get_template_directory() . '/inc/contact-form.php';
 require get_template_directory() . '/inc/map.php';
+require get_template_directory() . '/inc/focal-point.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/upgrade.php';
 require get_template_directory() . '/inc/updater.php';

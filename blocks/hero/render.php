@@ -10,9 +10,15 @@ $subtitle = isset( $attributes['subtitle'] ) ? $attributes['subtitle'] : '';
 $is_large = isset( $attributes['size'] ) && 'large' === $attributes['size'];
 $show_cta = ! isset( $attributes['showCta'] ) || $attributes['showCta'];
 
+$style    = "background-image:url('" . esc_url( $image ) . "');";
+$position = $image_id ? sk_focal_position( $image_id, 'sk-hero' ) : '';
+if ( $position ) {
+	$style .= 'background-position:' . $position . ';';
+}
+
 $wrapper = get_block_wrapper_attributes( array(
 	'class' => $is_large ? 'sk-hero sk-hero--large' : 'sk-hero',
-	'style' => "background-image:url('" . esc_url( $image ) . "');",
+	'style' => $style,
 ) );
 ?>
 <section <?php echo $wrapper; ?>>
