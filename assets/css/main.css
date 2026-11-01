@@ -233,7 +233,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-product-card__body a { text-decoration: underline; }
 
 /* Teamfoto mit Text: wide rounded photo, free-form text below in large type */
-.sk-team-photo__image { aspect-ratio: 1388 / 450; border-radius: 8px; overflow: hidden; background: var(--sk-panel); }
+.sk-team-photo__image { display: block; aspect-ratio: 1388 / 450; border-radius: 8px; overflow: hidden; background: var(--sk-panel); }
 .sk-team-photo__image img { width: 100%; height: 100%; object-fit: cover; }
 .sk-team-photo__text {
 	max-width: 1200px;
@@ -250,6 +250,7 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 .sk-team-photo__text ol { padding-left: 1.25em; }
 .sk-team-photo__text a { text-decoration: underline; }
 .sk-team-photo__text :is(h2, h3, h4) { margin: 1em 0 0.5em; }
+.sk-team-photo__more { max-width: 1200px; margin: 0 auto; }
 
 .sk-link {
 	display: inline-block;

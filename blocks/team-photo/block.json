@@ -4,9 +4,11 @@
 	"title": "Teamfoto mit Text",
 	"category": "solarkraftwerk",
 	"icon": "format-image",
-	"description": "Breites Foto (z. B. Teamfoto) mit frei formatierbarem Text darunter.",
+	"description": "Breites Foto (z. B. Teamfoto) mit frei formatierbarem Text darunter, optional mit Link (z. B. als Team-Teaser auf der Startseite).",
 	"attributes": {
 		"imageId": { "type": "number", "default": 0 },
+		"linkText": { "type": "string", "default": "" },
+		"linkUrl": { "type": "string", "default": "" },
 		"align": { "type": "string", "default": "full" }
 	},
 	"supports": { "html": false, "align": [ "full" ], "anchor": true },

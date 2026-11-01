@@ -7,6 +7,7 @@
 	var ToolbarButton = wp.components.ToolbarButton;
 	var Button = wp.components.Button;
 	var useSelect = wp.data.useSelect;
+	var sk = window.skEditor;
 
 	var TEMPLATE = [
 		[ 'core/paragraph', { placeholder: 'Text unter dem Foto – frei formatierbar …' } ],
@@ -52,21 +53,25 @@
 						return el( ToolbarButton, { icon: 'format-image', onClick: picker.open }, 'Bild ändern' );
 					} )
 				) : null,
-				attributes.imageId ? el( be.InspectorControls, {},
-					el( PanelBody, { title: 'Foto' },
+				el( be.InspectorControls, {},
+					attributes.imageId ? el( PanelBody, { title: 'Foto' },
 						el( Button, {
 							variant: 'tertiary',
 							isDestructive: true,
 							onClick: function () { setAttributes( { imageId: 0 } ); },
 						}, 'Bild entfernen' )
+					) : null,
+					el( PanelBody, { title: 'Link' },
+						sk.linkUrlControl( attributes, setAttributes, 'Wohin Foto und Link führen. Leer lassen für „Über uns“. Ohne Linktext gibt es keinen Link.' )
 					)
-				) : null,
+				),
 				el( 'section', blockProps,
 					el( 'div', { className: 'sk-container' },
 						image,
 						el( 'div', { className: 'sk-team-photo__text' },
 							el( be.InnerBlocks, { template: TEMPLATE } )
-						)
+						),
+						el( 'div', { className: 'sk-team-photo__more' }, sk.moreLink( attributes, setAttributes ) )
 					)
 				)
 			);
@@ -74,5 +79,15 @@
 		save: function () {
 			return el( be.InnerBlocks.Content );
 		},
+		variations: [
+			{
+				name: 'team-teaser',
+				title: 'Team-Teaser',
+				description: 'Teamfoto mit Text und einem Link zur Team-Seite, z. B. für die Startseite.',
+				icon: 'groups',
+				attributes: { linkText: 'Mehr über uns' },
+				scope: [ 'inserter' ],
+			},
+		],
 	} );
 } )( window.wp );
