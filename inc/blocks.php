@@ -37,13 +37,14 @@ function sk_editor_data() {
 			'subtitle' => get_theme_mod( 'sk_cta_subtitle', 'in nur 2 Minuten' ),
 		),
 		'contact'       => array(
-			'street' => get_theme_mod( 'sk_address_street', 'Musterstrasse 12' ),
-			'city'   => get_theme_mod( 'sk_address_city', '8000 Zürich' ),
-			'phone'  => get_theme_mod( 'sk_phone', '+41 234 43 21' ),
-			'email'  => get_theme_mod( 'sk_email', 'info@solarkraftwerk.ch' ),
-			'hours'  => get_theme_mod( 'sk_hours', 'Mo–Fr 08:00–17:00 Uhr' ),
+			'street'     => get_theme_mod( 'sk_address_street', 'Musterstrasse 12' ),
+			'city'       => get_theme_mod( 'sk_address_city', '8000 Zürich' ),
+			'phone'      => get_theme_mod( 'sk_phone', '+41 234 43 21' ),
+			'email'      => get_theme_mod( 'sk_email', 'info@solarkraftwerk.ch' ),
+			'hours'      => get_theme_mod( 'sk_hours', 'Mo–Fr 08:00–17:00 Uhr' ),
 			// Only a stored lookup; the editor never waits for the geocoder.
-			'map'    => sk_map_embed_url( false ),
+			'map'        => (bool) sk_map_geocode( sk_map_address(), false ),
+			'mapAddress' => sk_map_address(),
 		),
 	);
 }

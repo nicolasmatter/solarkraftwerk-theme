@@ -310,8 +310,26 @@ h3 { font-size: clamp(1.4rem, 2.4vw, 2.07rem); font-weight: 500; }
 	align-items: center; justify-content: center; overflow: hidden;
 	text-align: center; padding: 0;
 }
-.sk-map iframe { display: block; width: 100%; height: 320px; border: 0; }
 .sk-map__link { display: inline-block; margin-top: 8px; font-size: 0.875rem; text-decoration: underline; }
+
+/* Leaflet map (assets/js/map.js): OSM tiles turned anthracite, controls in the site's style. */
+.sk-map[data-lat] { display: block; height: 320px; border-radius: 8px; z-index: 0; }
+.sk-map.leaflet-container { background: var(--sk-dark); font-family: inherit; }
+/* Inverted grey tiles, contrast pulled in so land sits near the anthracite; the slight
+   transparency picks up its blue tint from the container behind. */
+.sk-map .leaflet-tile-pane { filter: grayscale(1) invert(1) contrast(0.6); opacity: 0.85; }
+.sk-map .leaflet-bar { border: none; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); }
+.sk-map .leaflet-bar a,
+.sk-map .leaflet-bar a:hover {
+	background: var(--sk-dark); color: var(--sk-white);
+	border-bottom-color: rgba(255, 255, 255, 0.15);
+	width: 34px; height: 34px; line-height: 34px;
+}
+.sk-map .leaflet-bar a:hover { background: var(--sk-orange); }
+.sk-map .leaflet-bar a.leaflet-disabled { background: var(--sk-dark); color: rgba(255, 255, 255, 0.35); }
+.sk-map .leaflet-control-attribution { background: rgba(56, 62, 66, 0.8); color: rgba(255, 255, 255, 0.75); border-top-left-radius: 4px; }
+.sk-map .leaflet-control-attribution a { color: var(--sk-white); }
+.sk-map__marker { background: none; border: none; filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); }
 .sk-form { display: flex; flex-direction: column; gap: 4px; }
 .sk-form label { font-weight: 600; margin-top: 12px; }
 .sk-form input, .sk-form textarea {

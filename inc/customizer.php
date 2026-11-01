@@ -25,6 +25,7 @@ function sk_customize_register( $wp_customize ) {
 			'sk_linkedin_url'   => array( 'label' => 'LinkedIn URL (leer = ausblenden)', 'default' => '' ),
 			'sk_facebook_url'   => array( 'label' => 'Facebook URL (leer = ausblenden)', 'default' => '' ),
 			'sk_map_address'    => array( 'label' => 'Kartenadresse (leer = Strasse und Ort von oben)', 'default' => '' ),
+			'sk_map_link'       => array( 'label' => 'Link „Grössere Karte anzeigen“, z. B. Google Maps (leer = OpenStreetMap)', 'default' => '' ),
 		),
 		'sk_copy' => array(
 			'sk_cta_title'    => array( 'label' => 'CTA-Button Titel', 'default' => 'Kostenlose Offerte' ),
