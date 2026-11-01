@@ -10,7 +10,7 @@ function sk_customize_register( $wp_customize ) {
 	$wp_customize->add_section( 'sk_copy', array(
 		'title'       => 'CTA-Button',
 		'priority'    => 31,
-		'description' => 'Der Text des Angebots-Buttons, der auf jeder Seite erscheint. Überschriften der einzelnen Seitenabschnitte werden direkt im jeweiligen Block bearbeitet.',
+		'description' => 'Text und Link des Angebots-Buttons, der auf jeder Seite erscheint. Überschriften der einzelnen Seitenabschnitte werden direkt im jeweiligen Block bearbeitet.',
 	) );
 
 	$sections = array(
@@ -45,5 +45,16 @@ function sk_customize_register( $wp_customize ) {
 			) );
 		}
 	}
+
+	$wp_customize->add_setting( 'sk_cta_url', array(
+		'default'           => '',
+		'sanitize_callback' => 'esc_url_raw',
+	) );
+	$wp_customize->add_control( 'sk_cta_url', array(
+		'label'       => 'CTA-Button Link',
+		'description' => 'Leer = Kontaktseite. Volle URL (https://…) oder Pfad (/offerte/).',
+		'section'     => 'sk_copy',
+		'type'        => 'text',
+	) );
 }
 add_action( 'customize_register', 'sk_customize_register' );
